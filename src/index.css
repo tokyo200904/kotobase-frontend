@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* 1. ÉP TAILWIND V4 DÙNG DARK MODE THEO CLASS (Thay vì hệ thống) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 2. ĐĂNG KÝ CLASS MÀU ĐỘNG (Sinh ra các class: bg-primary, text-primary...) */
+@theme {
+  --color-primary: var(--theme-primary);
+  --color-primary-hover: var(--theme-primary-hover);
+}
+
+/* 3. MÀU MẶC ĐỊNH LÚC VỪA VÀO WEB (Màu Blue) */
+:root {
+  --theme-primary: #2563eb;
+  --theme-primary-hover: #1d4ed8;
+}
