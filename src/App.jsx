@@ -4,7 +4,7 @@ import { MainLayout } from './layouts/MainLayout';
 
 // Import các Pages
 import { HomePage } from './pages/HomePage';
-// import { KanjiPage } from './pages/KanjiPage'; 
+import { KanjiPage } from './pages/KanjiPage'; 
 // import { VocabularyPage } from './pages/VocabularyPage';
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           
           {/* Các Route cho chức năng khác. Tạm thời map vào HomePage để demo */}
-          <Route path="/kanji" element={<HomePage />} />
+          <Route path="/kanji" element={<KanjiPage />} />
           <Route path="/vocabulary" element={<HomePage />} />
           <Route path="/grammar" element={<HomePage />} />
           <Route path="/statistics" element={<HomePage />} />
