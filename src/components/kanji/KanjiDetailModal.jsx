@@ -30,7 +30,6 @@ export const KanjiDetailModal = ({ isOpen, onClose, kanji, isLoading }) => {
         ) : (
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             
-            {/* Cột trái: Animation nét vẽ */}
             <div className="flex flex-col items-center justify-center border-b border-gray-100 pb-6 md:border-b-0 md:border-r md:pb-0 dark:border-gray-800">
               <div className="mb-2 rounded-lg bg-gray-100 px-3 py-1 text-xs font-bold text-gray-500 dark:bg-gray-800 dark:text-gray-400">
                 Cấp độ {kanji.level}
@@ -38,14 +37,19 @@ export const KanjiDetailModal = ({ isOpen, onClose, kanji, isLoading }) => {
               <KanjiStrokeWriter character={kanji.characters} />
             </div>
 
-            {/* Cột phải: Thông tin chi tiết ĐÃ ĐƯỢC NÂNG CẤP */}
             <div className="flex flex-col justify-center">
               
-              {/* Thêm chữ Kanji gốc vào bên phải cùng với ý nghĩa */}
-              <div className="mb-6 flex items-baseline gap-3 border-b border-gray-100 pb-4 dark:border-gray-800">
+              <div className="mb-6 flex flex-wrap items-baseline gap-3 border-b border-gray-100 pb-4 dark:border-gray-800">
                 <h2 className="text-5xl font-black text-gray-900 dark:text-white leading-none">
                   {kanji.characters}
                 </h2>
+                
+                {kanji.han && (
+                  <span className="text-2xl font-black text-primary uppercase tracking-wide">
+                    [{kanji.han}]
+                  </span>
+                )}
+
                 <h3 className="text-xl font-bold text-gray-600 dark:text-gray-300 capitalize">
                   - {kanji.meaning}
                 </h3>
@@ -56,7 +60,6 @@ export const KanjiDetailModal = ({ isOpen, onClose, kanji, isLoading }) => {
               </p>
 
               <div className="space-y-4">
-                {/* Âm On - Chỉnh màu sắc để ĐỌC RÕ HƠN */}
                 <div className="rounded-xl border border-red-100 bg-red-50 p-4 dark:border-red-900/40 dark:bg-red-950/20">
                   <span className="mb-2 block text-xs font-bold uppercase text-red-600 dark:text-red-400">Onyomi (Âm Hán)</span>
                   <div className="flex flex-wrap gap-2">
@@ -68,7 +71,6 @@ export const KanjiDetailModal = ({ isOpen, onClose, kanji, isLoading }) => {
                   </div>
                 </div>
 
-                {/* Âm Kun - Chỉnh màu sắc để ĐỌC RÕ HƠN */}
                 <div className="rounded-xl border border-blue-100 bg-blue-50 p-4 dark:border-blue-900/40 dark:bg-blue-950/20">
                   <span className="mb-2 block text-xs font-bold uppercase text-blue-600 dark:text-blue-400">Kunyomi (Âm Nhật)</span>
                   <div className="flex flex-wrap gap-2">

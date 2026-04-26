@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 
-// Bảng màu để map
-// Bạn copy nguyên đoạn này để lên đầu file src/hooks/useTheme.js
 const THEME_DICTIONARY = {
   blue: { main: '#2563eb', hover: '#1d4ed8' },
   green: { main: '#16a34a', hover: '#15803d' },
@@ -14,14 +12,12 @@ export const useTheme = () => {
   const [primaryColor, setPrimaryColor] = useState('blue');
 
   useEffect(() => {
-    // Khôi phục Dark Mode
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark');
     }
 
-    // Khôi phục Màu chủ đạo
     const savedColor = localStorage.getItem('primaryColor') || 'blue';
     changePrimaryColor(savedColor);
   }, []);
@@ -45,7 +41,6 @@ const changePrimaryColor = (colorKey) => {
     const root = document.documentElement;
     
     if (THEME_DICTIONARY[colorKey]) {
-      // Ghi đè trực tiếp vào biến CSS gốc
       root.style.setProperty('--theme-primary', THEME_DICTIONARY[colorKey].main);
       root.style.setProperty('--theme-primary-hover', THEME_DICTIONARY[colorKey].hover);
       localStorage.setItem('primaryColor', colorKey);

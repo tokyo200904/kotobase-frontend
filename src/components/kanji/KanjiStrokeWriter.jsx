@@ -19,7 +19,6 @@ export const KanjiStrokeWriter = ({ character }) => {
         delayBetweenStrokes: 200,
         strokeColor: '#2563eb',   
         radicalColor: '#ea580c',  
-        // SỬA Ở ĐÂY: Dùng rgba với opacity 0.2 (20%) để nét cực kỳ mờ và dịu mắt
         outlineColor: 'rgba(156, 163, 175, 0.2)', 
         showCharacter: false,     
         showOutline: true         

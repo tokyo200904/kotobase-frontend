@@ -1,6 +1,5 @@
 import { BookOpen, Library, Sigma, BarChart2 } from 'lucide-react';
 
-// Chứa danh sách các menu điều hướng để dễ dàng thêm/bớt sau này
 export const NAV_ITEMS = [
   { id: 'kanji', label: 'Kanji', path: '/kanji', icon: Sigma },
   { id: 'vocab', label: 'Từ vựng', path: '/vocabulary', icon: Library },

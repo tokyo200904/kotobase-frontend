@@ -6,7 +6,7 @@ import { SettingsModal } from '../components/common/SettingsModal';
 import { useTheme } from '../hooks/useTheme';
 
 export const MainLayout = ({ children }) => {
-  const themeProps = useTheme(); // Lấy gộp tất cả { isDarkMode, toggleDarkMode... }
+  const themeProps = useTheme(); 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Quản lý Modal
 
   return (
@@ -25,7 +25,6 @@ export const MainLayout = ({ children }) => {
 
       <Footer />
 
-      {/* Render Modal ở đây, nằm đè lên mọi thứ */}
       <SettingsModal 
         isOpen={isSettingsOpen} 
         onClose={() => setIsSettingsOpen(false)}

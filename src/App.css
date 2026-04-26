@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
-/* Định nghĩa biến CSS cho màu chủ đạo mặc định (Blue) */
 :root {
-  --primary: #2563eb;       /* Tương đương blue-600 */
-  --primary-hover: #1d4ed8; /* Tương đương blue-700 */
+  --primary: #2563eb;       
+  --primary-hover: #1d4ed8; 
 }
