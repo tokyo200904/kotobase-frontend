@@ -4,7 +4,10 @@ import { MainLayout } from './layouts/MainLayout';
 
 import { HomePage } from './pages/HomePage';
 import { KanjiPage } from './pages/KanjiPage'; 
-import { VocabPage } from './pages/VocabPage';
+
+import { VocabLevelsPage } from './pages/vocabulary/VocabLevelsPage';
+import { VocabLessonsPage } from './pages/vocabulary/VocabLessonsPage';
+import { VocabListPage } from './pages/vocabulary/VocabListPage';
 
 function App() {
   return (
@@ -14,7 +17,11 @@ function App() {
           <Route path="/" element={<HomePage />} />
           
           <Route path="/kanji" element={<KanjiPage />} />
-          <Route path="/vocabulary" element={<VocabPage />} />
+
+          <Route path="/vocabulary" element={<VocabLevelsPage />} />
+          <Route path="/vocabulary/level/:levelId" element={<VocabLessonsPage />} />
+          <Route path="/vocabulary/topic/:topicId" element={<VocabListPage />} />
+
           <Route path="/grammar" element={<HomePage />} />
           <Route path="/statistics" element={<HomePage />} />
 

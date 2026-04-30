@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Layers } from 'lucide-react';
+import { ChevronDown, Layers, Hash } from 'lucide-react'; 
 import { Link } from 'react-router-dom';
 import { vocabService } from '../../services/vocabService';
 
@@ -21,7 +21,7 @@ export const LessonAccordion = ({ lesson }) => {
   }, [isOpen, lesson.id, topics.length]);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
+    <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all dark:border-gray-800 dark:bg-gray-900">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between bg-gray-50/50 p-5 transition-colors hover:bg-gray-50 dark:bg-gray-900/50 dark:hover:bg-gray-800"
@@ -45,10 +45,12 @@ export const LessonAccordion = ({ lesson }) => {
           isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="border-t border-gray-100 p-4 dark:border-gray-800">
+        <div className="border-t border-gray-50 p-4 dark:border-gray-800">
           {isLoading ? (
-            <div className="space-y-3">
-              {[1, 2].map((i) => <div key={i} className="h-12 rounded-xl bg-gray-100 animate-pulse dark:bg-gray-800"></div>)}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {[1, 2].map((i) => (
+                <div key={i} className="h-14 rounded-2xl bg-gray-100 animate-pulse dark:bg-gray-800"></div>
+              ))}
             </div>
           ) : topics.length > 0 ? (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -56,12 +58,15 @@ export const LessonAccordion = ({ lesson }) => {
                 <Link
                   key={topic.id}
                   to={`/vocabulary/topic/${topic.id}`}
-                  className="flex items-center gap-3 rounded-xl border border-gray-100 p-3 transition-all hover:-translate-y-0.5 hover:border-primary hover:shadow-md dark:border-gray-800 dark:hover:border-primary"
+                  className="group flex items-center gap-4 rounded-2xl border border-gray-100 bg-white p-3 transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:shadow-md dark:border-gray-800 dark:bg-gray-900/50 dark:hover:border-primary"
                 >
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-sm font-bold text-gray-500 dark:bg-gray-800 dark:text-gray-400">
-                    #
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-50 text-gray-400 transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/10 group-hover:text-primary dark:bg-gray-800 dark:text-gray-500">
+                    <Hash size={18} />
+                  </div>
+                  
+                  <span className="font-semibold text-gray-700 transition-colors group-hover:text-primary dark:text-gray-300">
+                    {topic.name}
                   </span>
-                  <span className="font-medium text-gray-700 dark:text-gray-300">{topic.name}</span>
                 </Link>
               ))}
             </div>
