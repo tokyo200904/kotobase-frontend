@@ -15,9 +15,9 @@ export const vocabService = {
   },
 
   // Lấy danh sách Bài học theo Level
-  getLessonsByLevel: async (levelId) => {
+getLessonsByLevel: async (levelId, type = 'vocab') => {
     try {
-      const response = await fetch(`${BASE_URL}/lesson/levels/${levelId}`);
+      const response = await fetch(`${BASE_URL}/lesson/levels/${levelId}?type=${type}`);
       if (!response.ok) throw new Error('Lỗi tải Lessons');
       return await response.json();
     } catch (error) {

@@ -13,7 +13,7 @@ export const VocabLessonsPage = () => {
   useEffect(() => {
     const fetchLessons = async () => {
       setIsLoading(true);
-      const data = await vocabService.getLessonsByLevel(levelId);
+      const data = await vocabService.getLessonsByLevel(levelId, 'vocab');
       setLessons(data);
       setIsLoading(false);
     };
