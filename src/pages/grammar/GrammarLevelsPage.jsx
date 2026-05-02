@@ -19,29 +19,30 @@ export const GrammarLevelsPage = () => {
   }, []);
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-6rem)] max-w-5xl flex-col">
-      
-      <div className="shrink-0 space-y-6 pb-6">
-        <NotationTable />
 
-        <div className="flex items-center gap-3 border-b border-gray-100 pb-4 dark:border-gray-800">
-          <div className="rounded-xl bg-primary/10 p-2 text-primary dark:bg-primary/20">
-            <Network size={24} />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Lộ trình Ngữ pháp</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Chinh phục cấu trúc từ cơ bản đến nâng cao</p>
+    <div className="custom-scrollbar h-[calc(100vh-6rem)] w-full overflow-y-auto pr-2 md:pr-4">
+      
+      <div className="mx-auto max-w-5xl space-y-8 pb-10">
+        
+        <div className="space-y-6 pt-2">
+          <NotationTable />
+
+          <div className="flex items-center gap-3 border-b border-gray-100 pb-4 dark:border-gray-800">
+            <div className="rounded-xl bg-primary/10 p-2 text-primary dark:bg-primary/20">
+              <Network size={24} />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Lộ trình Ngữ pháp</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Chinh phục cấu trúc từ cơ bản đến nâng cao</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="custom-scrollbar flex-1 overflow-y-auto pr-4">
         <div className="relative pl-4 md:pl-0">
           <div className="absolute bottom-0 left-8 top-0 w-1 bg-gray-100 dark:bg-gray-800 md:left-12"></div>
 
-          <div className="space-y-8 pb-10">
+          <div className="space-y-8">
             {isLoading ? (
-              // Skeleton Timeline
               [1, 2, 3, 4, 5].map((i) => (
                 <div key={i} className="relative flex items-center gap-6 md:gap-8">
                   <div className="z-10 h-10 w-10 shrink-0 animate-pulse rounded-full bg-gray-200 dark:bg-gray-700 md:h-14 md:w-14 md:translate-x-[21px]"></div>
@@ -86,7 +87,7 @@ export const GrammarLevelsPage = () => {
           </div>
         </div>
       </div>
-      
+
     </div>
   );
 };
