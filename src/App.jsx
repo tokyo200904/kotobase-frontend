@@ -14,13 +14,16 @@ import { ConjugationPage } from "./pages/grammar/ConjugationPage";
 import { GrammarLevelsPage } from './pages/grammar/GrammarLevelsPage';
 import { GrammarLessonsPage } from './pages/grammar/GrammarLessonsPage';
 import { GrammarListPage } from './pages/grammar/GrammarListPage';
+import { AuthProvider } from "./context/AuthContext";
 
-
+import { OAuth2RedirectHandler } from './pages/auth/OAuth2RedirectHandler';
 function App() {
   return (
+  <AuthProvider>
     <BrowserRouter>
       <MainLayout>
         <Routes>
+          <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/kanji" element={<KanjiPage />} />
 
@@ -40,6 +43,7 @@ function App() {
         </Routes>
       </MainLayout>
     </BrowserRouter>
+  </AuthProvider>
   );
 }
 
