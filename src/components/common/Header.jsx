@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { LogIn, User as UserIcon, LogOut, Bell, Settings, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { LogIn, User as UserIcon, LogOut, Bell, Settings, ShieldCheck } from 'lucide-react'; 
 import { useAuth } from '../../context/AuthContext';
 import { AuthModal } from '../auth/AuthModal';
 
@@ -22,13 +23,22 @@ export const Header = () => {
 
   return (
     <header className="sticky top-0 z-[50] flex h-16 items-center justify-between border-b border-gray-100 bg-white/80 px-6 backdrop-blur-md dark:border-gray-800 dark:bg-gray-950/80">
-      <div className="flex items-center gap-2">
-        <div className="h-8 w-8 rounded-lg bg-primary"></div>
-        <span className="text-xl font-black tracking-tighter text-gray-900 dark:text-white">
-          KOTObase
+      
+      <Link to="/" className="group flex items-center gap-3 outline-none">
+        
+        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded bg-gradient-to-br from-gray-900 to-black text-white shadow-lg transition-all duration-300 group-hover:scale-105 group-hover:shadow-primary/40 dark:border dark:border-gray-700 dark:from-gray-800 dark:to-gray-950">
+          <span className="font-serif text-[22px] font-bold leading-none tracking-tighter">
+            侍
+          </span>
+          <div className="absolute inset-0 overflow-hidden rounded">
+            <div className="absolute -left-full top-0 h-[200%] w-1.5 origin-top-right rotate-45 bg-white/30 transition-all duration-500 group-hover:left-[200%]"></div>
+          </div>
+        </div>
+        <span className="font-['Dancing_Script',_cursive] text-[34px] font-bold text-gray-900 transition-colors dark:text-white">
+          KOTO<span className="text-primary">base</span>
         </span>
-      </div>
-
+        
+      </Link>
       <div className="flex items-center gap-4">
         <button className="rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800">
           <Bell size={20} />
