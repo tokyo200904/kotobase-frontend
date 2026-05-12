@@ -16,6 +16,9 @@ import { GrammarLessonsPage } from './pages/grammar/GrammarLessonsPage';
 import { GrammarListPage } from './pages/grammar/GrammarListPage';
 import { AuthProvider } from "./context/AuthContext";
 
+import { ExamLevelsPage } from './pages/exam/ExamLevelsPage';
+import { ExamListPage } from './pages/exam/ExamListPage';
+
 import { OAuth2RedirectHandler } from './pages/auth/OAuth2RedirectHandler';
 function App() {
   return (
@@ -35,6 +38,9 @@ function App() {
           <Route path="/grammar/level/:levelId" element={<GrammarLessonsPage />} />
           <Route path="/grammar/lesson/:lessonId"element={<GrammarListPage />}/>
           <Route path="/grammar/conjugation" element={<ConjugationPage />} />
+
+          <Route path="/exam" element={<ExamLevelsPage />} />
+          <Route path="/exam/level/:levelId" element={<ExamListPage />} />
 
           <Route path="/statistics" element={<HomePage />} />
 

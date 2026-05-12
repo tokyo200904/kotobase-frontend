@@ -29,7 +29,7 @@ export const GrammarLevelsPage = () => {
               <GraduationCap size={28} />
             </div>
             <div>
-              <h1 className="font-['Dancing_Script',_cursive] text-4xl font-bold text-gray-900 dark:text-white">
+              <h1 className="font-bold text-4xl font-bold text-gray-900 dark:text-white">
                 Grammar <span className="text-primary">Paths</span>
               </h1>
               <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
