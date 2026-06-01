@@ -17,39 +17,46 @@ import { GrammarListPage } from './pages/grammar/GrammarListPage';
 import { AuthProvider } from "./context/AuthContext";
 
 import { ExamLevelsPage } from './pages/exam/ExamLevelsPage';
+import { ExamDetailPage } from './pages/exam/ExamDetailPage';
 import { ExamListPage } from './pages/exam/ExamListPage';
 
+import { ExamReviewPage } from "./pages/exam/ExamReviewPage";
+import { ExamResultPage } from "./pages/exam/ExamResultPage";
+import { ExamProvider } from './context/ExamContext';
+import { ExamWorkspacePage } from './pages/exam/ExamWorkspacePage';
 import { OAuth2RedirectHandler } from './pages/auth/OAuth2RedirectHandler';
+
 function App() {
   return (
-  <AuthProvider>
-    <BrowserRouter>
-      <MainLayout>
+    <AuthProvider>
+      <BrowserRouter>
         <Routes>
-          <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
-          <Route path="/" element={<HomePage />} />
-          <Route path="/kanji" element={<KanjiPage />} />
+          <Route element={<MainLayout />}>
+            <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/kanji" element={<KanjiPage />} />
 
-          <Route path="/vocabulary" element={<VocabLevelsPage />} />
-          <Route path="/vocabulary/level/:levelId"element={<VocabLessonsPage />}/>
-          <Route path="/vocabulary/topic/:topicId"element={<VocabListPage />}/>
+            <Route path="/vocabulary" element={<VocabLevelsPage />} />
+            <Route path="/vocabulary/level/:levelId" element={<VocabLessonsPage />}/>
+            <Route path="/vocabulary/topic/:topicId" element={<VocabListPage />}/>
 
-          <Route path="/grammar" element={<GrammarLevelsPage />} />
-          <Route path="/grammar/level/:levelId" element={<GrammarLessonsPage />} />
-          <Route path="/grammar/lesson/:lessonId"element={<GrammarListPage />}/>
-          <Route path="/grammar/conjugation" element={<ConjugationPage />} />
+            <Route path="/grammar" element={<GrammarLevelsPage />} />
+            <Route path="/grammar/level/:levelId" element={<GrammarLessonsPage />} />
+            <Route path="/grammar/lesson/:lessonId" element={<GrammarListPage />}/>
+            <Route path="/grammar/conjugation" element={<ConjugationPage />} />
 
-          <Route path="/exam" element={<ExamLevelsPage />} />
-          <Route path="/exam/level/:levelId" element={<ExamListPage />} />
-
-          <Route path="/statistics" element={<HomePage />} />
-
+            <Route path="/exam" element={<ExamLevelsPage />} />
+            <Route path="/exam/level/:levelId" element={<ExamListPage />} />
+            <Route path="/exam/:examId/detail" element={<ExamDetailPage />} />
+            <Route path="/exam/result/:attemptId" element={<ExamResultPage />} />
+          </Route>
+          <Route path="/exam/attempt/:attemptId/section/:sectionId" element={<ExamProvider><ExamWorkspacePage /></ExamProvider> } />
+          <Route path="/exam/result/:attemptId/review" element={<ExamReviewPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
 
         </Routes>
-      </MainLayout>
-    </BrowserRouter>
-  </AuthProvider>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
