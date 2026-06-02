@@ -1,5 +1,13 @@
 const BASE_URL = 'http://localhost:8080/api/v1';
 
+const getHeaders = () => {
+  const token = localStorage.getItem('token');
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': token ? `Bearer ${token}` : ''
+  };
+};
+
 export const kanjiService = {
   getKanjiListByLevel: async (level) => {
     try {
@@ -12,15 +20,16 @@ export const kanjiService = {
     }
   },
 
-  getKanjiDetail: async (id) => {
-    try {
-      const response = await fetch(`${BASE_URL}/kanji/${id}`);
-      if (!response.ok) throw new Error('Lỗi tải chi tiết Kanji');
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-      return null;
+getKanjiDetail: async (id) => {
+    const response = await fetch(`${BASE_URL}/kanji/${id}`, {
+      method: 'GET',
+      headers: getHeaders() 
+    });
+    
+    if (!response.ok) {
+      throw new Error('Lỗi tải chi tiết Kanji');
     }
+    return await response.json();
   },
 
   searchKanji: async (keyword) => {

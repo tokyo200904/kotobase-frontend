@@ -26,9 +26,11 @@ import { ExamProvider } from './context/ExamContext';
 import { ExamWorkspacePage } from './pages/exam/ExamWorkspacePage';
 import { OAuth2RedirectHandler } from './pages/auth/OAuth2RedirectHandler';
 
+import { ToastProvider } from "./context/ToastContext";
 function App() {
   return (
     <AuthProvider>
+      <ToastProvider>
       <BrowserRouter>
         <Routes>
           <Route element={<MainLayout />}>
@@ -56,6 +58,7 @@ function App() {
 
         </Routes>
       </BrowserRouter>
+      </ToastProvider>
     </AuthProvider>
   );
 }

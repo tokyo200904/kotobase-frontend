@@ -1,20 +1,60 @@
-import React from "react";
-import { X } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { X, Bookmark } from "lucide-react";
 import { KanjiStrokeWriter } from "./KanjiStrokeWriter";
 import { AudioButton } from "../common/AudioButton";
-
+import { progressService } from "../../services/progressService"; 
+import { useToast } from "../../context/ToastContext";
 export const KanjiDetailModal = ({ isOpen, onClose, kanji, isLoading }) => {
+  const [isSaved, setIsSaved] = useState(false);
+const { addToast } = useToast();
+  useEffect(() => {
+    if (kanji) {
+      setIsSaved(kanji.saved);
+    }
+  }, [kanji]);
+
+  const handleToggleSave = async () => {
+    if (!kanji) return;
+    const previousState = isSaved;
+    
+    setIsSaved(!previousState);
+
+try {
+      const res = await progressService.toggleSaveItem(kanji.id, 'KANJI');
+      addToast(res.message, 'success'); // Hiện Toast
+    } catch (error) {
+      console.error("Lỗi khi lưu Kanji:", error);
+      setIsSaved(previousState);
+      addToast('Không thể lưu Kanji lúc này!', 'error'); 
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-opacity">
       <div className="relative w-full max-w-2xl scale-100 rounded-3xl bg-white p-6 md:p-8 shadow-2xl dark:border dark:border-gray-800 dark:bg-gray-900 animate-fade-in">
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
-        >
-          <X size={20} />
-        </button>
+        
+        <div className="absolute right-4 top-4 flex items-center gap-1 z-10">
+          {!isLoading && kanji && (
+            <button
+              onClick={handleToggleSave}
+              className="rounded-full p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+              title={isSaved ? "Bỏ lưu Kanji" : "Lưu Kanji này"}
+            >
+              <Bookmark 
+                size={22} 
+                className={`transition-colors ${isSaved ? 'fill-primary text-primary' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`} 
+              />
+            </button>
+          )}
+          <button
+            onClick={onClose}
+            className="rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
+            <X size={22} />
+          </button>
+        </div>
 
         {isLoading || !kanji ? (
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 animate-pulse py-4">
