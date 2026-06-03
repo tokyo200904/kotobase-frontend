@@ -27,6 +27,9 @@ import { ExamWorkspacePage } from './pages/exam/ExamWorkspacePage';
 import { OAuth2RedirectHandler } from './pages/auth/OAuth2RedirectHandler';
 
 import { ToastProvider } from "./context/ToastContext";
+
+import { DashboardPage } from './pages/statistics/DashboardPage';
+import { QuizPage } from './pages/statistics/QuizPage';
 function App() {
   return (
     <AuthProvider>
@@ -51,9 +54,15 @@ function App() {
             <Route path="/exam/level/:levelId" element={<ExamListPage />} />
             <Route path="/exam/:examId/detail" element={<ExamDetailPage />} />
             <Route path="/exam/result/:attemptId" element={<ExamResultPage />} />
+
+            <Route path="/dashboard" element={<DashboardPage />} />
           </Route>
+
           <Route path="/exam/attempt/:attemptId/section/:sectionId" element={<ExamProvider><ExamWorkspacePage /></ExamProvider> } />
           <Route path="/exam/result/:attemptId/review" element={<ExamReviewPage />} />
+
+          <Route path="/quiz" element={<QuizPage />} />
+          
           <Route path="*" element={<Navigate to="/" replace />} />
 
         </Routes>

@@ -34,8 +34,8 @@ export const Header = () => {
             <div className="absolute -left-full top-0 h-[200%] w-1.5 origin-top-right rotate-45 bg-white/30 transition-all duration-500 group-hover:left-[200%]"></div>
           </div>
         </div>
-        <span className="font-['Dancing_Script',_cursive] text-[34px] font-bold text-gray-900 transition-colors dark:text-white">
-          KOTO<span className="text-primary">base</span>
+        <span className="font-bold text-[34px] font-bold text-gray-900 transition-colors dark:text-white">
+          Koto<span className="text-primary">base</span>
         </span>
         
       </Link>
