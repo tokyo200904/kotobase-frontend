@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Search, X, Loader2 } from 'lucide-react';
 import { useKanji } from '../hooks/useKanji';
 import { KanjiDetailModal } from '../components/kanji/KanjiDetailModal';
+import { useAuth } from '../context/AuthContext'; 
 
 const LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'];
 
@@ -16,6 +17,17 @@ export const KanjiPage = () => {
 
   const [searchInput, setSearchInput] = useState('');
   const dropdownRef = useRef(null);
+
+  const { setAuthModalOpen } = useAuth();
+  const isAuthenticated = !!localStorage.getItem('token');
+
+  const handleProtectedOpenDetail = (id) => {
+    if (!isAuthenticated) {
+      setAuthModalOpen(true);
+      return;
+    }
+    handleOpenDetail(id);
+  };
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -40,9 +52,8 @@ export const KanjiPage = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-
   const onSelectSearchResult = (id) => {
-    handleOpenDetail(id);
+    handleProtectedOpenDetail(id); 
     clearSearchResults();
     setSearchInput('');
   };
@@ -85,7 +96,6 @@ export const KanjiPage = () => {
               )}
             </div>
 
-
             {searchInput.trim() && !isSearching && (
               <div className="absolute top-full mt-2 w-full overflow-hidden rounded-xl border border-gray-100 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-800">
                 {searchResults.length > 0 ? (
@@ -120,7 +130,6 @@ export const KanjiPage = () => {
               </div>
             )}
           </div>
-
 
           <div className={`inline-flex rounded-2xl bg-gray-100/80 p-1.5 shadow-inner backdrop-blur-sm dark:bg-gray-800/80 transition-opacity ${
             searchInput ? 'opacity-50 grayscale pointer-events-none' : 'opacity-100'
@@ -159,7 +168,7 @@ export const KanjiPage = () => {
               {kanjiList.map((kanji) => (
                 <button
                   key={kanji.id}
-                  onClick={() => handleOpenDetail(kanji.id)}
+                  onClick={() => handleProtectedOpenDetail(kanji.id)} 
                   className="group flex aspect-square cursor-pointer items-center justify-center rounded-2xl border border-gray-100 bg-white text-3xl font-medium text-gray-700 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary hover:text-primary hover:shadow-lg dark:border-gray-800 dark:bg-gray-950 dark:text-gray-300 dark:hover:border-primary dark:hover:text-primary"
                 >
                   {kanji.characters}

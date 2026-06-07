@@ -14,23 +14,7 @@ export const VocabCard = ({ vocab }) => {
     setIsSaved(vocab?.saved || false);
   }, [vocab]);
 
-  const handleToggleSave = async (e) => {
-    e.preventDefault();
-    e.stopPropagation(); 
-    const previousState = isSaved;
-    setIsSaved(!previousState); 
-try {
-      const res = await progressService.toggleSaveItem(vocab.id, 'VOCAB');
-      
-      addToast(res.message, 'success'); 
-      
-    } catch (error) {
-      console.error("Lỗi khi lưu từ vựng:", error);
-      setIsSaved(previousState);
-      
-      addToast('Mất kết nối! Vui lòng thử lại.', 'error'); 
-    }
-  };
+
 
   return (
     <div className="group flex flex-col rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:shadow-md dark:border-gray-800 dark:bg-gray-900">
@@ -53,16 +37,7 @@ try {
             <span className="text-sm font-bold text-primary capitalize">{vocab.meaning}</span>
           </div>
           
-          <button 
-            onClick={handleToggleSave}
-            className="rounded-full p-1.5 transition-all hover:bg-gray-100 active:scale-90 dark:hover:bg-gray-800"
-            title={isSaved ? "Xóa khỏi danh sách ôn tập" : "Lưu vào danh sách ôn tập"}
-          >
-            <Bookmark 
-              size={24} 
-              className={`transition-colors ${isSaved ? 'fill-primary text-primary' : 'text-gray-300 hover:text-gray-600 dark:border-gray-700 dark:text-gray-600 dark:hover:text-gray-300'}`} 
-            />
-          </button>
+
         </div>
       </div>
 

@@ -1,6 +1,16 @@
 const BASE_URL = 'http://localhost:8080/api/v1/auth';
 export const GOOGLE_LOGIN_URL = 'http://localhost:8080/oauth2/authorize/google';
 
+
+export const getHeaders = () => {
+  const token = localStorage.getItem('token');
+
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': token ? `Bearer ${token}` : ''
+  };
+};
+
 export const authService = {
   login: async (email, password) => {
     const response = await fetch(`${BASE_URL}/login`, {
@@ -32,5 +42,9 @@ export const authService = {
     });
     if (!response.ok) throw new Error('Token không hợp lệ hoặc đã hết hạn');
     return await response.json(); 
-  }
+  },
+
+  
+
+  
 };

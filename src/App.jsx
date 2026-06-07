@@ -30,6 +30,9 @@ import { ToastProvider } from "./context/ToastContext";
 
 import { DashboardPage } from './pages/statistics/DashboardPage';
 import { QuizPage } from './pages/statistics/QuizPage';
+
+import { StationStudyPage } from './pages/roadmap/StationStudyPage';
+import { LearnedItemsPage } from './pages/statistics/LearnedItemsPage';
 function App() {
   return (
     <AuthProvider>
@@ -56,12 +59,15 @@ function App() {
             <Route path="/exam/result/:attemptId" element={<ExamResultPage />} />
 
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/collection" element={<LearnedItemsPage />} />
           </Route>
 
           <Route path="/exam/attempt/:attemptId/section/:sectionId" element={<ExamProvider><ExamWorkspacePage /></ExamProvider> } />
           <Route path="/exam/result/:attemptId/review" element={<ExamReviewPage />} />
 
           <Route path="/quiz" element={<QuizPage />} />
+
+          <Route path="/roadmap/station/:stationId" element={<StationStudyPage />} />
           
           <Route path="*" element={<Navigate to="/" replace />} />
 

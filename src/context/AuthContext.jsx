@@ -4,9 +4,12 @@ import { authService } from '../services/authService';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  // 1. Quản lý trạng thái dữ liệu người dùng
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true); 
+  
+  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
 
   useEffect(() => {
     const checkToken = async () => {
@@ -31,6 +34,7 @@ export const AuthProvider = ({ children }) => {
     const userData = await authService.getMe(token);
     setUser(userData);
     setIsAuthenticated(true);
+    setAuthModalOpen(false); 
   };
 
   const logout = () => {
@@ -40,7 +44,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, isLoading, loginWithToken, logout }}>
+    <AuthContext.Provider 
+      value={{ 
+        user, 
+        isAuthenticated, 
+        isLoading, 
+        loginWithToken, 
+        logout,
+        isAuthModalOpen,      
+        setAuthModalOpen      
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
