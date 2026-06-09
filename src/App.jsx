@@ -33,6 +33,9 @@ import { QuizPage } from './pages/statistics/QuizPage';
 
 import { StationStudyPage } from './pages/roadmap/StationStudyPage';
 import { LearnedItemsPage } from './pages/statistics/LearnedItemsPage';
+
+import { PremiumPage } from './pages/premium/PremiumPage';
+import { PaymentResultPage } from './pages/premium/PaymentResultPage';
 function App() {
   return (
     <AuthProvider>
@@ -60,6 +63,8 @@ function App() {
 
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/collection" element={<LearnedItemsPage />} />
+
+            <Route path="/premium" element={<PremiumPage />} />
           </Route>
 
           <Route path="/exam/attempt/:attemptId/section/:sectionId" element={<ExamProvider><ExamWorkspacePage /></ExamProvider> } />
@@ -68,6 +73,8 @@ function App() {
           <Route path="/quiz" element={<QuizPage />} />
 
           <Route path="/roadmap/station/:stationId" element={<StationStudyPage />} />
+
+          <Route path="/payment-result" element={<PaymentResultPage />} />
           
           <Route path="*" element={<Navigate to="/" replace />} />
 

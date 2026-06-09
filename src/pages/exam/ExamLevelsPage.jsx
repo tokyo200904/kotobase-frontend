@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import { Sword, ChevronRight, Lock, Sparkles, Loader2 } from 'lucide-react';
+import { Sword, ChevronRight, Sparkles } from 'lucide-react';
 import { grammarService } from '../../services/grammarService'; 
 import { LEVEL_META } from '../../constants/vocabulary';
-import { useAuth } from '../../context/AuthContext';
 
 export const ExamLevelsPage = () => {
   const [levels, setLevels] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-
-  const { setAuthModalOpen } = useAuth();
-  const isAuthenticated = !!localStorage.getItem('token');
 
   useEffect(() => {
     const fetchLevels = async () => {
@@ -27,16 +23,8 @@ export const ExamLevelsPage = () => {
     fetchLevels();
   }, []);
 
-  const handleLevelClick = (levelId) => {
-    if (!isAuthenticated) {
-      setAuthModalOpen(true); 
-      return; 
-    }
-    navigate(`/exam/level/${levelId}`);
-  };
-
   return (
-    <div className="custom-scrollbar h-[calc(100vh-6rem)] w-full overflow-y-auto pr-2 md:pr-4">
+    <div className="custom-scrollbar h-[calc(100vh-6rem)] w-full overflow-y-auto pr-2 md:pr-4 bg-[#f8fafc] dark:bg-gray-950">
       <div className="mx-auto max-w-6xl space-y-10 pb-12 pt-6 animate-fade-in">
         
         <div className="flex flex-col items-start gap-4 border-b border-gray-100 pb-8 dark:border-gray-800 md:flex-row md:items-center">
@@ -46,11 +34,10 @@ export const ExamLevelsPage = () => {
           </div>
           <div>
             <h1 className="text-3xl font-black tracking-tight text-gray-900 dark:text-white md:text-2xl">
-              Đấu Trường JLPT
+              thi thử JLPT
             </h1>
-            <p className="mt-2 flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-              Chinh phục các bộ đề chuẩn cấu trúc thi thật. 
-              {!isAuthenticated && <span className="rounded-md bg-red-50 px-2 py-0.5 text-xs font-bold text-red-500 dark:bg-red-500/10">Cần đăng nhập</span>}
+            <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400">
+              Chinh phục các bộ đề chuẩn cấu trúc thi thật. Dành riêng cho thành viên Premium.
             </p>
           </div>
         </div>
@@ -72,28 +59,20 @@ export const ExamLevelsPage = () => {
           ) : (
             levels.map((level) => {
               const meta = LEVEL_META[level.level] || { title: 'Cấp độ', desc: 'Luyện thi JLPT' };
-
               return (
                 <button
                   key={level.id}
-                  onClick={() => handleLevelClick(level.id)}
+                  onClick={() => navigate(`/exam/level/${level.id}`)}
                   className="group relative flex w-full flex-col justify-between overflow-hidden rounded-[2rem] border border-gray-100 bg-white p-6 text-left shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 dark:border-gray-800 dark:bg-gray-900"
                 >
                   <div className="flex items-start justify-between">
-                    
                     <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-3xl font-black text-primary transition-all duration-300 group-hover:scale-110 group-hover:bg-primary group-hover:text-white group-hover:shadow-lg group-hover:shadow-primary/30">
                       {level.level}
                     </div>
                     
-                    {!isAuthenticated ? (
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 text-gray-400 transition-colors group-hover:bg-red-50 group-hover:text-red-500 dark:bg-gray-800 dark:group-hover:bg-red-900/30">
-                        <Lock size={18} strokeWidth={2.5} />
-                      </div>
-                    ) : (
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 text-gray-400 transition-colors group-hover:bg-primary/10 group-hover:text-primary dark:bg-gray-800">
-                        <ChevronRight size={20} strokeWidth={2.5} className="transition-transform group-hover:translate-x-1" />
-                      </div>
-                    )}
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 text-gray-400 transition-colors group-hover:bg-primary/10 group-hover:text-primary dark:bg-gray-800">
+                      <ChevronRight size={20} strokeWidth={2.5} className="transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
 
                   <div className="mt-8">
@@ -104,13 +83,11 @@ export const ExamLevelsPage = () => {
                       {meta.desc}
                     </p>
                   </div>
-                  
                 </button>
               );
             })
           )}
         </div>
-
       </div>
     </div>
   );

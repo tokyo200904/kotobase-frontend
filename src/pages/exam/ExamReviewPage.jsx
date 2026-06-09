@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom'; 
 import { ArrowLeft, CheckCircle2, XCircle, Lock, Loader2 } from 'lucide-react';
 import { examService } from '../../services/examService';
+import { useAuth } from '../../context/AuthContext'; 
 
 export const ExamReviewPage = () => {
   const { attemptId } = useParams();
+  const navigate = useNavigate();
   const [details, setDetails] = useState(null);
   const [activeTabId, setActiveTabId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const isPremiumUser = false; 
+  const { user } = useAuth();
+  const isPremiumUser = user?.premium || false; 
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -26,7 +29,7 @@ export const ExamReviewPage = () => {
     fetchDetails();
   }, [attemptId]);
 
-  if (isLoading) return <div className="flex h-screen items-center justify-center"><Loader2 className="animate-spin text-primary" size={40} /></div>;
+  if (isLoading) return <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-950"><Loader2 className="animate-spin text-primary" size={40} /></div>;
   if (!details) return null;
 
   const activeSection = details.sections.find(s => s.sectionId === activeTabId);
@@ -40,6 +43,7 @@ export const ExamReviewPage = () => {
   return (
     <div className="flex h-screen w-full flex-col bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
       
+      {/* HEADER */}
       <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6 shadow-sm dark:border-gray-800 dark:bg-gray-900 z-10">
         <div className="flex items-center gap-4">
           <Link to={`/exam/result/${attemptId}`} className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
@@ -51,15 +55,12 @@ export const ExamReviewPage = () => {
 
       <main className="flex flex-1 overflow-hidden">
         
+        {/* NỘI DUNG CHỮA BÀI */}
         <div className="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar">
           <div className="mx-auto max-w-3xl space-y-10">
             {activeSection?.questionGroups?.map((group) => (
               <div key={group.groupId} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-                
-                <div className="mb-6 rounded-xl bg-gray-50 p-4 font-semibold dark:bg-gray-800/50">
-                  {group.content}
-                </div>
-
+                <div className="mb-6 rounded-xl bg-gray-50 p-4 font-semibold dark:bg-gray-800/50">{group.content}</div>
                 {group.audioUrl && <audio src={group.audioUrl} controls className="mb-6 w-full" />}
                 {group.imageUrl && <img src={group.imageUrl} alt="Exam" className="mb-6 rounded-lg border w-full object-contain" />}
 
@@ -98,12 +99,13 @@ export const ExamReviewPage = () => {
                         <h4 className="mb-2 text-sm font-bold text-blue-800 dark:text-blue-400">💡 Lời giải chi tiết:</h4>
                         
                         {isPremiumUser ? (
-                          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{q.explanation}</p>
+                          <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{q.explanation || "Không có lời giải cho câu này."}</p>
                         ) : (
                           <div className="relative">
-                            <p className="text-sm text-gray-700 blur-[4px] select-none dark:text-gray-300">{q.explanation || "Giải thích ẩn do chưa nâng cấp. Giải thích ẩn do chưa nâng cấp."}</p>
+                            <p className="text-sm text-gray-700 blur-[4px] select-none dark:text-gray-300">{q.explanation || "Giải thích ẩn do chưa nâng cấp. Nội dung chi tiết chỉ dành cho VIP."}</p>
                             <div className="absolute inset-0 flex items-center justify-center">
-                              <button className="flex items-center gap-2 rounded-full bg-blue-600 px-5 py-2 text-xs font-bold text-white shadow-lg hover:bg-blue-700">
+                              {/* Chuyển hướng thẳng sang trang Premium khi bấm nút */}
+                              <button onClick={() => navigate('/premium')} className="flex items-center gap-2 rounded-full bg-blue-600 px-5 py-2 text-xs font-bold text-white shadow-lg transition-transform hover:bg-blue-700 hover:scale-105 active:scale-95">
                                 <Lock size={14} /> Nâng cấp Premium
                               </button>
                             </div>
@@ -130,24 +132,17 @@ export const ExamReviewPage = () => {
               </button>
             ))}
           </div>
-
           <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
             <h4 className="mb-4 text-xs font-bold uppercase tracking-widest text-gray-400">Danh sách câu hỏi</h4>
             <div className="grid grid-cols-5 gap-2.5">
               {allQuestionsInSection.map((q, idx) => {
                 let btnClass = "bg-gray-100 text-gray-500 border-gray-200 dark:bg-gray-800 dark:border-gray-700"; 
-                
                 if (q.userSelectedAnswerId) {
                   if (q.isCorrect) btnClass = "bg-green-100 text-green-700 border-green-300 dark:bg-green-900/40 dark:text-green-400 dark:border-green-800"; 
                   else btnClass = "bg-red-100 text-red-700 border-red-300 dark:bg-red-900/40 dark:text-red-400 dark:border-red-800"; 
                 }
-
                 return (
-                  <button
-                    key={q.questionId}
-                    onClick={() => scrollToQuestion(q.questionId)}
-                    className={`flex h-10 w-10 items-center justify-center rounded-xl border text-xs font-bold transition-transform hover:scale-110 active:scale-95 ${btnClass}`}
-                  >
+                  <button key={q.questionId} onClick={() => scrollToQuestion(q.questionId)} className={`flex h-10 w-10 items-center justify-center rounded-xl border text-xs font-bold transition-transform hover:scale-110 active:scale-95 ${btnClass}`}>
                     {idx + 1}
                   </button>
                 );

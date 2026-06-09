@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, BookType } from 'lucide-react';
+import { ArrowLeft, BookType, Lock } from 'lucide-react';
 import { grammarService } from '../../services/grammarService';
 import { GrammarAccordion } from '../../components/grammar/GrammarAccordion';
+import { PremiumModal } from '../../components/common/PremiumModal';
 
 export const GrammarLessonsPage = () => {
   const { levelId } = useParams();
   const [lessons, setLessons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPremiumModalOpen, setIsPremiumModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchLessons = async () => {
@@ -32,9 +34,9 @@ export const GrammarLessonsPage = () => {
   }, [levelId]);
 
   return (
-    <div className="custom-scrollbar h-[calc(100vh-6rem)] w-full overflow-y-auto pr-2 md:pr-4">
+    <div className="custom-scrollbar h-[calc(100vh-6rem)] w-full overflow-y-auto pr-2 md:pr-4 bg-[#f8fafc] dark:bg-gray-950">
       
-      <div className="mx-auto max-w-6xl space-y-6 pb-10 pt-2">
+      <div className="mx-auto max-w-6xl space-y-6 pb-10 pt-2 animate-fade-in">
         
         <div className="flex items-center gap-4 border-b border-gray-100 pb-4 dark:border-gray-800">
           <Link 
@@ -48,8 +50,8 @@ export const GrammarLessonsPage = () => {
               <BookType className="text-primary" /> 
               Danh sách Bài học Ngữ pháp
             </h1>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              Cấp độ #{levelId} • Chọn một bài học để xem các cấu trúc
+            <p className="mt-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+              Cấp độ #{levelId} • 5 Bài đầu miễn phí, mở khóa Premium để học tiếp
             </p>
           </div>
         </div>
@@ -61,16 +63,37 @@ export const GrammarLessonsPage = () => {
             ))
           ) : lessons?.length > 0 ? (
             lessons.map((lesson) => (
-              <GrammarAccordion key={lesson?.id || Math.random()} lesson={lesson} />
+              
+              <div key={lesson?.id || Math.random()} className="relative group">
+                
+                <div className={lesson.isLocked ? "pointer-events-none opacity-40 blur-[1px] transition-all duration-300 group-hover:blur-sm grayscale-[30%]" : ""}>
+                  <GrammarAccordion lesson={lesson} />
+                </div>
+
+                {lesson.isLocked && (
+                  <div
+                    onClick={() => setIsPremiumModalOpen(true)}
+                    className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center rounded-2xl bg-gray-900/5 transition-all hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10"
+                  >
+                    <div className="flex items-center gap-2 rounded-xl border border-gray-200/50 bg-white/80 px-4 py-2 text-sm font-bold text-gray-500 shadow-sm backdrop-blur-md transition-all group-hover:scale-105 group-hover:border-yellow-300 group-hover:text-yellow-600 dark:border-gray-700/50 dark:bg-gray-800/80 dark:text-gray-400">
+                      <Lock size={16} /> Mở khóa cấu trúc VIP
+                    </div>
+                  </div>
+                )}
+                
+              </div>
+
             ))
           ) : (
-            <div className="col-span-full py-16 text-center text-gray-500 dark:text-gray-400">
+            <div className="col-span-full py-16 text-center font-bold text-gray-400">
               Chưa có bài học nào cho cấp độ này.
             </div>
           )}
         </div>
 
       </div>
+
+      <PremiumModal isOpen={isPremiumModalOpen} onClose={() => setIsPremiumModalOpen(false)} />
     </div>
   );
 };

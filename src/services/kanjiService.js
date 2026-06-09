@@ -1,27 +1,33 @@
-const BASE_URL = 'http://localhost:8080/api/v1';
+const BASE_URL = 'http://localhost:8080/api/v1/kanji';
 
 const getHeaders = () => {
   const token = localStorage.getItem('token');
-  return {
+  const headers = {
     'Content-Type': 'application/json',
-    'Authorization': token ? `Bearer ${token}` : ''
   };
+  
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
+  return headers;
 };
 
 export const kanjiService = {
   getKanjiListByLevel: async (level) => {
-    try {
-      const response = await fetch(`${BASE_URL}/kanji?level=${level}`);
-      if (!response.ok) throw new Error('Lỗi tải danh sách Kanji');
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
+    const res = await fetch(`${BASE_URL}?level=${level}`, { 
+      method: 'GET',
+      headers: getHeaders() 
+    });
+    
+    if (res.status === 401) throw new Error('Vui lòng đăng nhập để xem dữ liệu này');
+    if (!res.ok) throw new Error('Lỗi tải danh sách Kanji');
+    
+    return await res.json();
   },
 
 getKanjiDetail: async (id) => {
-    const response = await fetch(`${BASE_URL}/kanji/${id}`, {
+    const response = await fetch(`${BASE_URL}/${id}`, {
       method: 'GET',
       headers: getHeaders() 
     });
@@ -32,14 +38,13 @@ getKanjiDetail: async (id) => {
     return await response.json();
   },
 
-  searchKanji: async (keyword) => {
-    try {
-      const response = await fetch(`${BASE_URL}/kanji/search?keyword=${encodeURIComponent(keyword)}`);
-      if (!response.ok) throw new Error('Lỗi khi tìm kiếm Kanji');
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  }
+searchKanji: async (keyword) => {
+    const res = await fetch(`${BASE_URL}/search?keyword=${keyword}`, { 
+      method: 'GET',
+      headers: getHeaders() 
+    });
+    
+    if (!res.ok) throw new Error('Lỗi tìm kiếm Kanji');
+    return await res.json();
+  },
 };

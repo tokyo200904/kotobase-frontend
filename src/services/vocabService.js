@@ -1,18 +1,19 @@
-
 const BASE_URL = 'http://localhost:8080/api/v1';
 
 const getHeaders = () => {
   const token = localStorage.getItem('token');
-  return {
-    'Content-Type': 'application/json',
-    'Authorization': token ? `Bearer ${token}` : ''
-  };
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  return headers;
 };
+
 export const vocabService = {
   // Lấy danh sách Level
   getLevels: async () => {
     try {
-      const response = await fetch(`${BASE_URL}/level`);
+      const response = await fetch(`${BASE_URL}/level`, {
+        headers: getHeaders() // ĐÃ THÊM HEADER
+      });
       if (!response.ok) throw new Error('Lỗi tải Levels');
       return await response.json();
     } catch (error) {
@@ -21,10 +22,12 @@ export const vocabService = {
     }
   },
 
-  // Lấy danh sách Bài học theo Level
-getLessonsByLevel: async (levelId, type = 'vocab') => {
+  // Lấy danh sách Bài học theo Level 
+  getLessonsByLevel: async (levelId, type = 'vocab') => {
     try {
-      const response = await fetch(`${BASE_URL}/lesson/levels/${levelId}?type=${type}`);
+      const response = await fetch(`${BASE_URL}/lesson/levels/${levelId}?type=${type}`, {
+        headers: getHeaders() 
+      });
       if (!response.ok) throw new Error('Lỗi tải Lessons');
       return await response.json();
     } catch (error) {
@@ -36,7 +39,9 @@ getLessonsByLevel: async (levelId, type = 'vocab') => {
   // Lấy danh sách Chủ đề theo Bài học
   getTopicsByLesson: async (lessonId) => {
     try {
-      const response = await fetch(`${BASE_URL}/topic/${lessonId}`);
+      const response = await fetch(`${BASE_URL}/topic/${lessonId}`, {
+        headers: getHeaders()
+      });
       if (!response.ok) throw new Error('Lỗi tải Topics');
       return await response.json();
     } catch (error) {
@@ -46,24 +51,24 @@ getLessonsByLevel: async (levelId, type = 'vocab') => {
   },
 
   // Lấy Từ vựng theo Chủ đề 
-getVocabsByTopic: async (topicId, page = 1, limit = 5) => {
-  try {
-    const response = await fetch(
-      `${BASE_URL}/vocab/by_topic?topicId=${topicId}&page=${page}&limit=${limit}`,
-      {
-        method: 'GET',
-        headers: getHeaders()
+  getVocabsByTopic: async (topicId, page = 1, limit = 5) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/vocab/by_topic?topicId=${topicId}&page=${page}&limit=${limit}`,
+        {
+          method: 'GET',
+          headers: getHeaders() 
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Lỗi tải Vocabularies');
       }
-    );
 
-    if (!response.ok) {
-      throw new Error('Lỗi tải Vocabularies');
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      return { data: [], totalPages: 0, page: 0 };
     }
-
-    return await response.json();
-  } catch (error) {
-    console.error(error);
-    return { data: [], totalPages: 0, page: 0 };
   }
-}
 };
