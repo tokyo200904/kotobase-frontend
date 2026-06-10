@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, X, Loader2, Lock, Sparkles, Crown, BookOpen, GraduationCap, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+import { PracticeActionGroup } from '../components/practice/PracticeActionGroup';
 import { useKanji } from '../hooks/useKanji';
 import { KanjiDetailModal } from '../components/kanji/KanjiDetailModal';
 import { useAuth } from '../context/AuthContext';
 
 const LEVELS = ['N5', 'N4', 'N3', 'N2', 'N1'];
+const LEVEL_MAP = { 'N5': 1, 'N4': 2, 'N3': 3, 'N2': 4, 'N1': 5 };
 
 const PremiumRequiredModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -53,6 +54,9 @@ export const KanjiPage = () => {
     selectedKanji, isLoadingDetail, 
     isModalOpen, handleOpenDetail, handleCloseModal 
   } = useKanji('N5');
+
+  // KHAI BÁO BIẾN Ở ĐÂY: Bên trong component KanjiPage
+  const isPremiumLocked = activeLevel !== 'N5' && !user?.premium;
 
   const [searchInput, setSearchInput] = useState('');
   const dropdownRef = useRef(null);
@@ -171,6 +175,28 @@ export const KanjiPage = () => {
                 );
               })}
             </div>
+          </div>
+        </div>
+
+        <div className={`relative overflow-hidden rounded-[2.5rem] border-2 bg-white p-6 shadow-sm dark:bg-gray-900 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 ${isPremiumLocked ? 'border-gray-200' : 'border-blue-100 dark:border-blue-900/40'}`}>
+          <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-blue-500/5 blur-3xl"></div>
+          
+          <div>
+            <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
+              Luyện tập Kanji {activeLevel}
+            </h2>
+            <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400 max-w-md">
+              Hệ thống sẽ lấy ngẫu nhiên các chữ Hán thuộc cấp độ {activeLevel} để tạo bài tập. Hãy chọn một chế độ để bắt đầu!
+            </p>
+          </div>
+
+          <div className="relative z-10">
+            <PracticeActionGroup 
+              module="KANJI" 
+              level={activeLevel} 
+              levelId={LEVEL_MAP[activeLevel]} 
+              isLocked={isPremiumLocked}
+            />
           </div>
         </div>
 

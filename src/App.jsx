@@ -36,6 +36,12 @@ import { LearnedItemsPage } from './pages/statistics/LearnedItemsPage';
 
 import { PremiumPage } from './pages/premium/PremiumPage';
 import { PaymentResultPage } from './pages/premium/PaymentResultPage';
+
+import { FlashcardPage } from './pages/practice/FlashcardPage'; 
+import { QuizPage as PracticeQuizPage } from './pages/practice/QuizPage';         
+import { DokkaiPage } from './pages/practice/DokkaiPage';
+import { GrammarDokkaiPage } from './pages/practice/GrammarDokkaiPage';
+
 function App() {
   return (
     <AuthProvider>
@@ -65,6 +71,11 @@ function App() {
             <Route path="/collection" element={<LearnedItemsPage />} />
 
             <Route path="/premium" element={<PremiumPage />} />
+
+            <Route path="/practice/flashcard" element={<FlashcardPage />} />
+            <Route path="/practice/quiz" element={<PracticeQuizPage />} />
+            <Route path="/practice/dokkai" element={<DokkaiPage />} />
+            <Route path="/practice/grammar-dokkai" element={<GrammarDokkaiPage />} />
           </Route>
 
           <Route path="/exam/attempt/:attemptId/section/:sectionId" element={<ExamProvider><ExamWorkspacePage /></ExamProvider> } />

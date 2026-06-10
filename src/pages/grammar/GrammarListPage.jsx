@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookType, LayoutList, BookOpenCheck } from 'lucide-react';
 import { grammarService } from '../../services/grammarService';
 import { AudioButton } from '../../components/common/AudioButton'; 
+import { PracticeActionGroup } from '../../components/practice/PracticeActionGroup'; 
 
 export const GrammarListPage = () => {
   const { lessonId } = useParams();
@@ -42,6 +43,7 @@ export const GrammarListPage = () => {
 
   return (
     <div className="flex h-[calc(100vh-6rem)] flex-col space-y-4">
+      
       <div className="flex items-center gap-4 border-b border-gray-100 pb-4 dark:border-gray-800">
         <button 
           onClick={() => navigate(-1)}
@@ -87,7 +89,6 @@ export const GrammarListPage = () => {
 
         <div className="custom-scrollbar flex flex-1 flex-col overflow-y-auto rounded-2xl border border-gray-100 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
           {isLoadingDetail || !grammarDetail ? (
-            // Skeleton Detail
             <div className="animate-pulse space-y-6">
               <div className="h-10 w-1/2 rounded-xl bg-gray-200 dark:bg-gray-800"></div>
               <div className="h-24 rounded-2xl bg-gray-100 dark:bg-gray-800/50"></div>
@@ -96,16 +97,28 @@ export const GrammarListPage = () => {
           ) : (
             <div className="animate-fade-in space-y-6">
               
-              <div className="border-b border-gray-100 pb-6 dark:border-gray-800">
-                <h2 className="mb-4 text-4xl font-black text-gray-900 dark:text-white">
-                  {grammarDetail.title}
-                </h2>
-                <div className="inline-flex rounded-xl bg-primary/10 px-4 py-3">
-                  <span className="text-lg font-bold tracking-wide text-primary">
-                    <span className="mr-2 opacity-60">Cấu trúc:</span>
-                    {grammarDetail.structure}
-                  </span>
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-gray-100 pb-6 dark:border-gray-800">
+                
+                <div>
+                  <h2 className="mb-4 text-4xl font-black text-gray-900 dark:text-white">
+                    {grammarDetail.title}
+                  </h2>
+                  <div className="inline-flex rounded-xl bg-primary/10 px-4 py-3">
+                    <span className="text-lg font-bold tracking-wide text-primary">
+                      <span className="mr-2 opacity-60">Cấu trúc:</span>
+                      {grammarDetail.structure}
+                    </span>
+                  </div>
                 </div>
+
+                <div className="shrink-0 pt-2 sm:pt-0">
+                  <PracticeActionGroup 
+                    module="GRAMMAR" 
+                    grammarId={activeGrammarId} 
+                    isLocked={false} 
+                  />
+                </div>
+                
               </div>
 
               <div className="grid gap-6 sm:grid-cols-2">

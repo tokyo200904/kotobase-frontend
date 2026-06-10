@@ -4,38 +4,13 @@ import { ArrowLeft, BookOpen } from 'lucide-react';
 import { useVocabList } from '../../hooks/useVocabList';
 import { VocabCard } from '../../components/vocab/VocabCard';
 import { Pagination } from '../../components/common/Pagination';
-import { Lock, LogIn } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
+
+import { PracticeActionGroup } from '../../components/practice/PracticeActionGroup';
 
 export const VocabListPage = () => {
   const { topicId } = useParams();
   const navigate = useNavigate();
 
-  const { setAuthModalOpen } = useAuth();
-  const isAuthenticated = !!localStorage.getItem('token');
-  if (!isAuthenticated) {
-    return (
-      <div className="flex h-[calc(100vh-6rem)] w-full flex-col items-center justify-center bg-gray-50/50 px-4 text-center dark:bg-gray-950/50">
-        <div className="animate-fade-in flex flex-col items-center rounded-[2.5rem] border border-gray-100 bg-white p-10 shadow-2xl shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none max-w-lg">
-          <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-blue-50 text-blue-500 dark:bg-blue-500/10 dark:text-blue-400 relative">
-            <div className="absolute inset-0 animate-ping rounded-full bg-blue-400 opacity-20"></div>
-            <Lock size={40} strokeWidth={2.5} className="relative z-10" />
-          </div>
-          <h1 className="text-3xl font-black text-gray-900 dark:text-white">Nội dung dành cho Hội viên</h1>
-          <p className="mt-4 text-sm font-medium leading-relaxed text-gray-500 dark:text-gray-400">
-            Tính năng xem danh sách Từ vựng theo chủ đề yêu cầu tài khoản để hệ thống có thể lưu lại tiến trình học của riêng bạn.
-          </p>
-          <button
-            onClick={() => setAuthModalOpen(true)}
-            className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-lg font-black text-white shadow-xl shadow-primary/30 transition-all hover:scale-105 active:scale-95 cursor-pointer"
-          >
-            <LogIn size={22} /> Đăng nhập để xem tiếp
-          </button>
-        </div>
-      </div>
-    );
-  }
-  
   const { 
     vocabs, 
     isLoading, 
@@ -45,54 +20,85 @@ export const VocabListPage = () => {
   } = useVocabList(topicId);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4 border-b border-gray-100 pb-4 dark:border-gray-800">
-        <button 
-          onClick={() => navigate(-1)} 
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800"
-          aria-label="Quay lại"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <div>
-          <h1 className="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white">
-            <BookOpen className="text-primary" size={24} /> Học Từ Vựng
-          </h1>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Chủ đề #{topicId} • Hoàn thành các từ vựng dưới đây
-          </p>
+    <div className="space-y-8 animate-fade-in custom-scrollbar h-[calc(100vh-6rem)] w-full overflow-y-auto pr-2 md:pr-4 pb-12 pt-2">
+      
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-6 dark:border-gray-800">
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => navigate(-1)} 
+            className="flex h-12 w-12 items-center justify-center rounded-2xl border border-gray-200 bg-white text-gray-500 transition-all hover:bg-gray-50 active:scale-95 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800 shadow-sm"
+            aria-label="Quay lại"
+          >
+            <ArrowLeft size={20} />
+          </button>
+          <div>
+            <h1 className="flex items-center gap-2 text-2xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+              <div className="bg-blue-100 p-1.5 rounded-xl text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+                <BookOpen size={24} />
+              </div>
+              Kho Từ Vựng
+            </h1>
+            <p className="mt-1.5 text-xs font-bold uppercase tracking-widest text-gray-400">
+              Chủ đề #{topicId} • Khám phá và ghi nhớ
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="min-h-[500px]">
+      <div className="relative overflow-hidden rounded-[2.5rem] border-2 border-blue-100 bg-white p-6 shadow-sm dark:border-blue-900/40 dark:bg-gray-900 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-blue-500/5 blur-3xl"></div>
+        
+        <div className="relative z-10">
+          <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
+            Khu vực Luyện Tập
+          </h2>
+          <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400 max-w-md leading-relaxed">
+            Áp dụng các phương pháp học tập tương tác cao (Lật thẻ, Đố vui, Đọc hiểu) để ghi nhớ từ vựng sâu hơn và lâu hơn.
+          </p>
+        </div>
+
+        <div className="relative z-10 shrink-0">
+          <PracticeActionGroup 
+            module="VOCAB" 
+            topicId={topicId} 
+            isLocked={false} 
+          />
+        </div>
+      </div>
+
+      <div className="min-h-[400px]">
         {isLoading ? (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-48 rounded-2xl bg-gray-100 animate-pulse dark:bg-gray-800"></div>
+              <div key={i} className="h-48 rounded-[2rem] bg-white border border-gray-100 animate-pulse dark:bg-gray-900 dark:border-gray-800 shadow-sm"></div>
             ))}
           </div>
         ) : vocabs.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 animate-fade-in">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 animate-fade-in">
             {vocabs.map((vocab) => (
               <VocabCard key={vocab.id} vocab={vocab} />
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-500 dark:text-gray-400">
+          <div className="flex flex-col items-center justify-center py-20 text-gray-400 bg-white border border-dashed border-gray-200 rounded-[2.5rem] dark:bg-gray-900 dark:border-gray-800">
             <BookOpen size={48} className="mb-4 text-gray-300 dark:text-gray-700" />
-            <p className="text-lg font-medium">Chưa có từ vựng nào.</p>
-            <p className="text-sm">Vui lòng quay lại sau.</p>
+            <p className="text-lg font-black text-gray-500 dark:text-gray-400">Trống rỗng</p>
+            <p className="text-sm font-medium mt-1">Chưa có từ vựng nào được thêm vào chủ đề này.</p>
           </div>
         )}
       </div>
 
-      {!isLoading && (
-        <Pagination 
-          currentPage={currentPage} 
-          totalPages={totalPages} 
-          onPageChange={handlePageChange} 
-        />
+      {/* 4. PHÂN TRANG */}
+      {!isLoading && totalPages > 1 && (
+        <div className="flex justify-center pt-4">
+          <Pagination 
+            currentPage={currentPage} 
+            totalPages={totalPages} 
+            onPageChange={handlePageChange} 
+          />
+        </div>
       )}
+      
     </div>
   );
 };
