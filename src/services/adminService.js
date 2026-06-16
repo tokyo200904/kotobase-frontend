@@ -170,4 +170,31 @@ getGrammars: async (search = '', levelId = '', lessonId = '', page = 0, size = 1
     const res = await fetch(`${BASE_URL}/grammar/${id}`, { method: 'DELETE', headers: getHeaders() });
     return handleResponse(res);
   },
+
+  // ================= QUẢN LÝ BÀI HỌC (LESSON) =================
+  getLessons: async (search = '', levelId = '', lessonType = '', page = 0, size = 15) => {
+    const params = new URLSearchParams({ page, size });
+    if (search) params.append('search', search);
+    if (levelId) params.append('levelId', levelId);
+    if (lessonType) params.append('lessonType', lessonType);
+    
+    const res = await fetch(`${BASE_URL}/lesson?${params.toString()}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  getLessonById: async (id) => {
+    const res = await fetch(`${BASE_URL}/lesson/${id}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  createLesson: async (data) => {
+    const res = await fetch(`${BASE_URL}/lesson`, { method: 'POST', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  updateLesson: async (id, data) => {
+    const res = await fetch(`${BASE_URL}/lesson/${id}`, { method: 'PUT', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  deleteLesson: async (id) => {
+    const res = await fetch(`${BASE_URL}/lesson/${id}`, { method: 'DELETE', headers: getHeaders() });
+    return handleResponse(res);
+  },
 };

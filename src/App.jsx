@@ -48,7 +48,8 @@ import { AdminLayout } from './admin/layouts/AdminLayout';
 import { KanjiAdmin } from './admin/pages/KanjiAdmin';
 import { VocabAdmin } from './admin/pages/VocabAdmin';
 import { GrammarAdmin } from './admin/pages/GrammarAdmin';
-
+import { LevelAdmin } from './admin/pages/LevelAdmin';
+import { LessonAdmin } from './admin/pages/LessonAdmin';
 function App() {
   return (
     <AuthProvider>
@@ -101,6 +102,8 @@ function App() {
               <Route path="kanji" element={<KanjiAdmin />} />
               <Route path="vocab" element={<VocabAdmin />} />
               <Route path="grammar" element={<GrammarAdmin />} />
+              <Route path="levels" element={<LevelAdmin />} />
+              <Route path="lessons" element={<LessonAdmin />} />
             </Route>
 
         </Routes>
