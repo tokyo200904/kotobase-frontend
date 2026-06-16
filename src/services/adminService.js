@@ -265,4 +265,36 @@ getGrammars: async (search = '', levelId = '', lessonId = '', page = 0, size = 1
     const res = await fetch(`${BASE_URL}/transaction/${id}`, { headers: getHeaders() });
     return handleResponse(res);
   },
+
+  // ================= QUẢN LÝ NGƯỜI DÙNG (USERS) =================
+  getUsers: async (search = '', isEnabled = '', isPremium = '', page = 0, size = 15) => {
+    const params = new URLSearchParams({ page, size });
+    if (search) params.append('search', search);
+    if (isEnabled !== '') params.append('isEnabled', isEnabled);
+    if (isPremium !== '') params.append('isPremium', isPremium);
+    
+    const res = await fetch(`${BASE_URL}/user?${params.toString()}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  getUserDetail: async (id) => {
+    const res = await fetch(`${BASE_URL}/user/${id}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  toggleUserStatus: async (id) => {
+    const res = await fetch(`${BASE_URL}/user/${id}/toggle-status`, { method: 'PATCH', headers: getHeaders() });
+    return handleResponse(res);
+  },
+  grantManualPremium: async (id, planId) => {
+    const res = await fetch(`${BASE_URL}/user/${id}/grant-premium`, { 
+      method: 'POST', 
+      headers: getHeaders(), 
+      body: JSON.stringify({ planId }) 
+    });
+    return handleResponse(res);
+  },
+
+  getActivePlansForDropdown: async () => {
+    const res = await fetch(`${BASE_URL}/plans/active-list`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
 };
