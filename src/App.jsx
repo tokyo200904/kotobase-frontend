@@ -51,6 +51,8 @@ import { GrammarAdmin } from './admin/pages/GrammarAdmin';
 import { LevelAdmin } from './admin/pages/LevelAdmin';
 import { LessonAdmin } from './admin/pages/LessonAdmin';
 import { TopicAdmin } from './admin/pages/TopicAdmin';
+import { PlanAdmin } from './admin/pages/PlanAdmin';
+import { TransactionAdmin } from './admin/pages/TransactionAdmin';
 function App() {
   return (
     <AuthProvider>
@@ -106,6 +108,8 @@ function App() {
               <Route path="levels" element={<LevelAdmin />} />
               <Route path="lessons" element={<LessonAdmin />} />
               <Route path="topics" element={<TopicAdmin />} />
+              <Route path="premium" element={<PlanAdmin />} />
+              <Route path="transactions" element={<TransactionAdmin />} />
             </Route>
 
         </Routes>

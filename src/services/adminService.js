@@ -224,4 +224,45 @@ getGrammars: async (search = '', levelId = '', lessonId = '', page = 0, size = 1
     const res = await fetch(`${BASE_URL}/topic/${id}`, { method: 'DELETE', headers: getHeaders() });
     return handleResponse(res);
   },
+
+  // ================= QUẢN LÝ GÓI CƯỚC (PREMIUM PLANS) =================
+  getPlans: async (search = '', isActive = '', page = 0, size = 10) => {
+    const params = new URLSearchParams({ page, size });
+    if (search) params.append('search', search);
+    if (isActive !== '') params.append('isActive', isActive);
+    
+    const res = await fetch(`${BASE_URL}/plans?${params.toString()}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  getPlanById: async (id) => {
+    const res = await fetch(`${BASE_URL}/plans/${id}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  createPlan: async (data) => {
+    const res = await fetch(`${BASE_URL}/plans`, { method: 'POST', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  updatePlan: async (id, data) => {
+    const res = await fetch(`${BASE_URL}/plans/${id}`, { method: 'PUT', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  togglePlanStatus: async (id) => {
+    const res = await fetch(`${BASE_URL}/plans/${id}/toggle-status`, { method: 'PATCH', headers: getHeaders() });
+    return handleResponse(res);
+  },
+
+  // ================= QUẢN LÝ NHẬT KÝ GIAO DỊCH (TRANSACTIONS) =================
+  getTransactions: async (search = '', status = '', page = 0, size = 15) => {
+    const params = new URLSearchParams({ page, size });
+    if (search) params.append('search', search);
+    if (status) params.append('status', status); 
+    
+    const res = await fetch(`${BASE_URL}/transaction?${params.toString()}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  
+  getTransactionDetail: async (id) => {
+    const res = await fetch(`${BASE_URL}/transaction/${id}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
 };
