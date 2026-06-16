@@ -216,7 +216,7 @@ export const VocabAdmin = () => {
             <CustomDropdown 
               value={filterLevel} options={levels} 
               onChange={(val) => { setFilterLevel(val); setCurrentPage(0); }} 
-              placeholder="Lọc theo Cấp độ" className="w-full" 
+              placeholder="Lọc theo Cấp độ" optionLabelKey="levelName" className="w-full" 
             />
           </div>
         </div>
@@ -349,7 +349,7 @@ export const VocabAdmin = () => {
                   {/* B1. Chọn Level */}
                   <div className="relative z-30">
                     <label className="block text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2">1. Chọn Cấp độ JLPT (*)</label>
-                    <CustomDropdown value={formData.levelId} options={levels} onChange={handleLevelChange} placeholder="--- Chọn Level ---" />
+                    <CustomDropdown value={formData.levelId} options={levels} onChange={handleLevelChange} placeholder="--- Chọn Level ---" optionLabelKey="levelName" />
                   </div>
 
                

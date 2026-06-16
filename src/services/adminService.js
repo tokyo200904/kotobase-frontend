@@ -197,4 +197,31 @@ getGrammars: async (search = '', levelId = '', lessonId = '', page = 0, size = 1
     const res = await fetch(`${BASE_URL}/lesson/${id}`, { method: 'DELETE', headers: getHeaders() });
     return handleResponse(res);
   },
+
+  // ================= QUẢN LÝ CHỦ ĐỀ (TOPIC) =================
+  getTopics: async (search = '', lessonId = '', page = 0, size = 15) => {
+    const params = new URLSearchParams({ page, size });
+    if (search) params.append('search', search);
+    // API backend của bạn chỉ cần filter theo lessonId
+    if (lessonId) params.append('lessonId', lessonId); 
+    
+    const res = await fetch(`${BASE_URL}/topic?${params.toString()}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  getTopicById: async (id) => {
+    const res = await fetch(`${BASE_URL}/topic/${id}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  createTopic: async (data) => {
+    const res = await fetch(`${BASE_URL}/topic`, { method: 'POST', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  updateTopic: async (id, data) => {
+    const res = await fetch(`${BASE_URL}/topic/${id}`, { method: 'PUT', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  deleteTopic: async (id) => {
+    const res = await fetch(`${BASE_URL}/topic/${id}`, { method: 'DELETE', headers: getHeaders() });
+    return handleResponse(res);
+  },
 };

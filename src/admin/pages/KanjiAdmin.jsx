@@ -151,6 +151,7 @@ export const KanjiAdmin = () => {
               options={levels} 
               onChange={(val) => { setFilterLevel(val); setCurrentPage(0); }} 
               placeholder="Lọc theo Cấp độ" 
+              optionLabelKey="levelName"
               className="w-full [&>div]:pl-14" 
             />
           </div>
@@ -269,6 +270,7 @@ export const KanjiAdmin = () => {
                       options={levels} 
                       onChange={(val) => handleDropdownChange('levelId', val)} 
                       placeholder="Chọn cấp độ" 
+                      optionLabelKey="levelName"
                     />
                   </div>
                 </div>

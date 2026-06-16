@@ -34,7 +34,7 @@ export const GrammarAdmin = () => {
   useEffect(() => {
     if (!filterLevel) { setLessons([]); return; }
     const fetchLessons = async () => {
-      try { const res = await adminService.getCompactLessonsByLevel(filterLevel, 'GRAMMAR'); setLessons(res.data || res || []); } 
+      try { const res = await adminService.getCompactLessonsByLevel(filterLevel, 'grammar'); setLessons(res.data || res || []); } 
       catch (err) { console.error(err); }
     };
     fetchLessons();
@@ -97,7 +97,7 @@ export const GrammarAdmin = () => {
             <input type="text" placeholder="Tìm theo tên, ý nghĩa..." value={searchTerm} onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(0); }} className={`${inputClass} pl-14`} />
           </div>
           <div className="relative z-20">
-            <CustomDropdown value={filterLevel} options={levels} onChange={(val) => { setFilterLevel(val); setFilterLesson(''); setCurrentPage(0); }} placeholder="Lọc theo Cấp độ" className="w-full" />
+            <CustomDropdown value={filterLevel} options={levels} onChange={(val) => { setFilterLevel(val); setFilterLesson(''); setCurrentPage(0); }} placeholder="Lọc theo Cấp độ" optionLabelKey="levelName" className="w-full" />
           </div>
           <div className={`relative z-10 transition-opacity duration-300 ${filterLevel ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
             <CustomDropdown value={filterLesson} options={lessons} onChange={(val) => { setFilterLesson(val); setCurrentPage(0); }} placeholder="Lọc theo Bài học" optionLabelKey="title" className="w-full" />

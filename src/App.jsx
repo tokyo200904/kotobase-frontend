@@ -50,6 +50,7 @@ import { VocabAdmin } from './admin/pages/VocabAdmin';
 import { GrammarAdmin } from './admin/pages/GrammarAdmin';
 import { LevelAdmin } from './admin/pages/LevelAdmin';
 import { LessonAdmin } from './admin/pages/LessonAdmin';
+import { TopicAdmin } from './admin/pages/TopicAdmin';
 function App() {
   return (
     <AuthProvider>
@@ -104,6 +105,7 @@ function App() {
               <Route path="grammar" element={<GrammarAdmin />} />
               <Route path="levels" element={<LevelAdmin />} />
               <Route path="lessons" element={<LessonAdmin />} />
+              <Route path="topics" element={<TopicAdmin />} />
             </Route>
 
         </Routes>

@@ -143,7 +143,7 @@ export const LessonAdmin = () => {
             <input type="text" placeholder="Tìm kiếm tên bài học..." value={searchTerm} onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(0); }} className={`${inputClass} pl-14`} />
           </div>
           <div className="relative z-30">
-            <CustomDropdown value={filterLevel} options={levels} onChange={(val) => { setFilterLevel(val); setCurrentPage(0); }} placeholder="Lọc theo Cấp độ" className="w-full" />
+            <CustomDropdown value={filterLevel} options={levels} onChange={(val) => { setFilterLevel(val); setCurrentPage(0); }} placeholder="Lọc theo Cấp độ" optionLabelKey="levelName" className="w-full" />
           </div>
           <div className="relative z-20">
             <CustomDropdown value={filterType} options={TARGET_TYPES} onChange={(val) => { setFilterType(val); setCurrentPage(0); }} placeholder="Lọc theo Phân loại" optionLabelKey="name" className="w-full" />
@@ -222,7 +222,7 @@ export const LessonAdmin = () => {
               <button onClick={closeWithAnimation} className="h-12 w-12 flex items-center justify-center text-gray-400 bg-gray-50 hover:bg-gray-200 hover:text-gray-900 rounded-2xl transition-all dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white shrink-0"><X size={24} strokeWidth={2.5} /></button>
             </div>
 
-            <div className="p-8 space-y-6">
+            <div className="p-6 sm:p-10 space-y-6 overflow-y-auto custom-scrollbar flex-1 pb-40">
               
               <div>
                 <label className="block text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2">Tên bài học (*)</label>
@@ -232,7 +232,7 @@ export const LessonAdmin = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="relative z-30">
                   <label className="block text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2">Cấp độ JLPT (*)</label>
-                  <CustomDropdown value={formData.levelId} options={levels} onChange={(val) => handleDropdownChange('levelId', val)} placeholder="Chọn Cấp độ" />
+                  <CustomDropdown value={formData.levelId} options={levels} onChange={(val) => handleDropdownChange('levelId', val)} placeholder="Chọn Cấp độ" optionLabelKey="levelName" />
                 </div>
                 
                 <div className="relative z-20">

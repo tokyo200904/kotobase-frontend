@@ -114,7 +114,7 @@ export const GrammarModal = ({ isOpen, onClose, editId, onSuccess, levels }) => 
                   <div className="flex flex-col gap-6 md:col-span-2 lg:col-span-1 lg:border-r lg:border-gray-100 lg:dark:border-gray-800 lg:pr-8">
                     <div>
                       <label className="block text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2">1. Cấp độ JLPT (*)</label>
-                      <CustomDropdown value={formData.levelId} options={levels} onChange={(val) => handleDropdownChange('levelId', val)} placeholder="Chọn Cấp độ" className="z-30" />
+                      <CustomDropdown value={formData.levelId} options={levels} onChange={(val) => handleDropdownChange('levelId', val)} placeholder="Chọn Cấp độ" optionLabelKey="levelName" className="z-30" />
                     </div>
                     <div className={`transition-all duration-300 ${formData.levelId ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
                       <label className="block text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2">2. Thuộc Bài Học (*)</label>
