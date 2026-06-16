@@ -60,11 +60,27 @@ export const adminService = {
     return handleResponse(res);
   },
 
+getCompactLessonsByLevel: async (levelId, lessonType = '') => {
+    let url = `${BASE_URL}/lesson/compact?levelId=${levelId}`;
+    if (lessonType) {
+      url += `&lessonType=${lessonType}`;
+    }
+    const res = await fetch(url, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  getCompactTopicsByLesson: async (lessonId) => {
+    // Dựa vào code backend bạn vừa gửi: /topic/compact?lessonId=...
+    const res = await fetch(`${BASE_URL}/topic/compact?lessonId=${lessonId}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+
   // ================= QUẢN LÝ TỪ VỰNG (VOCAB) =================
-  getVocabs: async (search = '', topicId = '', page = 0, size = 10) => {
+  getVocabs: async (search = '', levelId = '', topicId = '', page = 0, size = 10) => {
     const params = new URLSearchParams({ page, size });
     if (search) params.append('search', search);
-    if (topicId) params.append('topicId', topicId);
+    if (levelId) params.append('levelId', levelId); // API hỗ trợ lọc Level
+    if (topicId) params.append('topicId', topicId); // API hỗ trợ lọc Topic
+    
     const res = await fetch(`${BASE_URL}/vocab?${params.toString()}`, { headers: getHeaders() });
     return handleResponse(res);
   },

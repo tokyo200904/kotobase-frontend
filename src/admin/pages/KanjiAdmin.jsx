@@ -80,6 +80,12 @@ export const KanjiAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!formData.characters || !formData.han || !formData.meaning || !formData.levelId) {
+      alert("⚠️ Vui lòng điền đầy đủ các trường Thông tin cơ bản bắt buộc (*) trước khi lưu!");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       if (editId) { await adminService.updateKanji(editId, formData); } 
@@ -339,10 +345,14 @@ export const KanjiAdmin = () => {
               <button onClick={closeWithAnimation} className="px-8 py-4 rounded-2xl font-black text-gray-500 bg-gray-50 hover:bg-gray-200 hover:text-gray-900 transition-all dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">
                 Đóng lại
               </button>
-              <button onClick={handleSubmit} disabled={isSubmitting} className="flex items-center gap-3 px-10 py-4 rounded-2xl font-black text-white bg-primary shadow-[0_6px_0_rgb(0,0,0,0.15)] hover:brightness-110 active:translate-y-1.5 active:shadow-none transition-all disabled:opacity-50 disabled:grayscale">
-                {isSubmitting ? <Loader2 size={20} className="animate-spin" /> : <PlusCircle size={20} strokeWidth={2.5} />} 
-                {editId ? 'Lưu cập nhật' : 'Xuất bản Kanji'}
-              </button>
+              <button 
+  onClick={handleSubmit} 
+  disabled={isSubmitting || !formData.characters || !formData.han || !formData.meaning || !formData.levelId} 
+  className="flex items-center gap-3 px-10 py-4 rounded-2xl font-black text-white bg-primary shadow-[0_6px_0_rgb(0,0,0,0.15)] hover:brightness-110 active:translate-y-1.5 active:shadow-none transition-all disabled:opacity-50 disabled:grayscale"
+>
+  {isSubmitting ? <Loader2 size={20} className="animate-spin" /> : <PlusCircle size={20} strokeWidth={2.5} />} 
+  {editId ? 'Lưu cập nhật' : 'Xuất bản Kanji'}
+</button>
             </div>
 
           </div>
