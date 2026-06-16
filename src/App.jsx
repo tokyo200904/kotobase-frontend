@@ -42,6 +42,13 @@ import { QuizPage as PracticeQuizPage } from './pages/practice/QuizPage';
 import { DokkaiPage } from './pages/practice/DokkaiPage';
 import { GrammarDokkaiPage } from './pages/practice/GrammarDokkaiPage';
 
+import { AdminLayout } from './admin/layouts/AdminLayout';
+
+
+import { KanjiAdmin } from './admin/pages/KanjiAdmin';
+import { VocabAdmin } from './admin/pages/VocabAdmin';
+import { GrammarAdmin } from './admin/pages/GrammarAdmin';
+
 function App() {
   return (
     <AuthProvider>
@@ -88,6 +95,13 @@ function App() {
           <Route path="/payment-result" element={<PaymentResultPage />} />
           
           <Route path="*" element={<Navigate to="/" replace />} />
+
+
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route path="kanji" element={<KanjiAdmin />} />
+              <Route path="vocab" element={<VocabAdmin />} />
+              <Route path="grammar" element={<GrammarAdmin />} />
+            </Route>
 
         </Routes>
       </BrowserRouter>
