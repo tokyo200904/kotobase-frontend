@@ -45,13 +45,18 @@ export const VocabAdmin = () => {
 
 
   useEffect(() => {
+    setIsLoading(true);
+
     const loadVocabs = async () => {
-      setIsLoading(true);
       try {
         const response = await adminService.getVocabs(searchTerm, filterLevel, filterTopic, currentPage, 10);
         setVocabs(response.data || []);
         setTotalPages(response.totalPages || 1);
-      } catch (err) { console.error(err); } finally { setIsLoading(false); }
+      } catch (err) { 
+        console.error(err); 
+      } finally { 
+        setIsLoading(false); 
+      }
     };
 
     const delayDebounce = setTimeout(() => { loadVocabs(); }, 400);

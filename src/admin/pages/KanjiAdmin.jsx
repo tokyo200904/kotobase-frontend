@@ -37,13 +37,18 @@ export const KanjiAdmin = () => {
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
+
     const loadKanjis = async () => {
-      setIsLoading(true);
       try {
         const response = await adminService.getKanjis(searchTerm, filterLevel, currentPage, 10);
         setKanjis(response.data || []);
         setTotalPages(response.totalPages || 1);
-      } catch (err) { console.error(err); } finally { setIsLoading(false); }
+      } catch (err) { 
+        console.error(err); 
+      } finally { 
+        setIsLoading(false); 
+      }
     };
 
     const delayDebounce = setTimeout(() => { loadKanjis(); }, 400); 
