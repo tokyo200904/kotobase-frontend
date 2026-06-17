@@ -56,6 +56,7 @@ import { TransactionAdmin } from './admin/pages/TransactionAdmin';
 import { UserAdmin } from './admin/pages/UserAdmin';
 import { ExamAdmin } from './admin/pages/ExamAdmin';
 import { ExamQuestionsAdmin } from './admin/pages/ExamQuestionsAdmin';
+import { StationAdmin } from './admin/pages/StationAdmin';
 function App() {
   return (
     <AuthProvider>
@@ -116,6 +117,7 @@ function App() {
               <Route path="users" element={<UserAdmin />} />
               <Route path="exams" element={<ExamAdmin />} /> 
               <Route path="exams/sections/:sectionId/questions" element={<ExamQuestionsAdmin />} />
+              <Route path="roadmap" element={<StationAdmin />} />
             </Route>
 
         </Routes>

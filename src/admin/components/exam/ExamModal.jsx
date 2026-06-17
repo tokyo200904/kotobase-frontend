@@ -33,7 +33,7 @@ export const ExamModal = ({ isOpen, onClose, editId, onSuccess, levels }) => {
             passingScore: d.passingScore || 0,
             isPublished: d.isPublished ?? false,
             levelId: d.levelId || '',
-            sections: d.sections || []
+            sections: d.sections || [] 
           });
         } catch (err) { alert('Lỗi tải thông tin đề thi!'); triggerClose(); }
       };
@@ -75,7 +75,7 @@ export const ExamModal = ({ isOpen, onClose, editId, onSuccess, levels }) => {
 
   const currentSumDuration = formData.sections.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
   const currentSumScore = formData.sections.reduce((sum, s) => sum + (s.maxScore || 0), 0);
-  const currentSumQuestions = formData.sections.reduce((sum, s) => sum + (s.totalQuestions || 0), 0); // 🌟 MỚI CẬP NHẬT
+  const currentSumQuestions = formData.sections.reduce((sum, s) => sum + (s.totalQuestions || 0), 0);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
@@ -94,24 +94,42 @@ export const ExamModal = ({ isOpen, onClose, editId, onSuccess, levels }) => {
       alert(`⛔ Lỗi Logic Thời gian: Tổng khai báo (${formData.durationMinutes}p) khác Tổng các phần (${currentSumDuration}p)!`);
       return;
     }
-
     if (formData.maxScore !== currentSumScore) {
       alert(`⛔ Lỗi Logic Điểm số: Tổng khai báo (${formData.maxScore}đ) khác Tổng các phần (${currentSumScore}đ)!`);
       return;
     }
-
     if (formData.totalQuestions !== currentSumQuestions) {
-      alert(`⛔ Lỗi Logic Số lượng câu: Tổng khai báo (${formData.totalQuestions} câu) KHÔNG KHỚP với tổng các phần thi cộng lại (${currentSumQuestions} câu)!`);
+      alert(`⛔ Lỗi Logic Số lượng câu: Tổng khai báo (${formData.totalQuestions} câu) khác tổng các phần (${currentSumQuestions} câu)!`);
       return;
     }
 
     setIsSubmitting(true);
     try {
+      const safePayload = {
+        title: formData.title,
+        levelId: formData.levelId,
+        totalQuestions: formData.totalQuestions,
+        maxScore: formData.maxScore,
+        durationMinutes: formData.durationMinutes,
+        passingScore: formData.passingScore,
+        isPublished: formData.isPublished,
+        sections: formData.sections.map(sec => ({
+          id: sec.id || null, 
+          sectionName: sec.sectionName,
+          sectionType: sec.sectionType,
+          displayOrder: sec.displayOrder,
+          durationMinutes: sec.durationMinutes,
+          minPassingScore: sec.minPassingScore,
+          totalQuestions: sec.totalQuestions,
+          maxScore: sec.maxScore
+        }))
+      };
+
       if (editId) {
-        await adminService.updateExam(editId, formData);
+        await adminService.updateExam(editId, safePayload);
         alert("✅ Cập nhật cấu trúc đề thi thành công!");
       } else {
-        await adminService.createExam(formData);
+        await adminService.createExam(safePayload);
         alert("🎉 Tạo đề thi mới thành công!");
       }
       onSuccess(); 
@@ -136,7 +154,6 @@ export const ExamModal = ({ isOpen, onClose, editId, onSuccess, levels }) => {
         </div>
 
         <div className="p-8 overflow-y-auto custom-scrollbar flex-1 space-y-8 bg-gray-50/50 dark:bg-gray-950/50 pb-40">
-          
           <div className="bg-white dark:bg-gray-900 p-8 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-sm relative">
              <h3 className="font-black text-lg text-gray-900 dark:text-white mb-6">1. Thông tin tổng quan</h3>
              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -148,32 +165,20 @@ export const ExamModal = ({ isOpen, onClose, editId, onSuccess, levels }) => {
                  <label className="block text-[11px] font-black uppercase text-gray-400 mb-2">Cấp độ (*)</label>
                  <CustomDropdown value={formData.levelId} options={levels} onChange={(val)=>setFormData(p=>({...p, levelId:val}))} placeholder="Chọn Level" optionLabelKey="levelName" />
                </div>
-
                <div>
                   <label className="block text-[11px] font-black uppercase text-gray-400 mb-2">Tổng số câu hỏi</label>
-                  <input 
-                    type="number" name="totalQuestions" value={formData.totalQuestions} onChange={handleInputChange} 
-                    className={`${inputClass} ${formData.totalQuestions !== currentSumQuestions ? 'border-red-400 bg-red-50 text-red-600' : 'border-green-400 bg-green-50 text-green-700'}`} 
-                  />
-                  <p className={`text-[10px] font-black mt-1.5 uppercase ${formData.totalQuestions !== currentSumQuestions ? 'text-red-500' : 'text-green-600'}`}>
-                    {formData.totalQuestions !== currentSumQuestions ? `⚠️ Phải bằng ${currentSumQuestions} câu` : '✅ Đã khớp số lượng'}
-                  </p>
+                  <input type="number" name="totalQuestions" value={formData.totalQuestions} onChange={handleInputChange} className={`${inputClass} ${formData.totalQuestions !== currentSumQuestions ? 'border-red-400 bg-red-50 text-red-600' : 'border-green-400 bg-green-50 text-green-700'}`} />
+                  <p className={`text-[10px] font-black mt-1.5 uppercase ${formData.totalQuestions !== currentSumQuestions ? 'text-red-500' : 'text-green-600'}`}>{formData.totalQuestions !== currentSumQuestions ? `⚠️ Phải bằng ${currentSumQuestions} câu` : '✅ Đã khớp'}</p>
                </div>
-
                <div>
                   <label className="block text-[11px] font-black uppercase text-gray-400 mb-2">Thời gian tổng (Phút)</label>
                   <input type="number" name="durationMinutes" value={formData.durationMinutes} onChange={handleInputChange} className={`${inputClass} ${formData.durationMinutes !== currentSumDuration ? 'border-red-400 bg-red-50 text-red-600' : 'border-green-400 bg-green-50 text-green-700'}`} />
-                  <p className={`text-[10px] font-black mt-1.5 uppercase ${formData.durationMinutes !== currentSumDuration ? 'text-red-500' : 'text-green-600'}`}>
-                    {formData.durationMinutes !== currentSumDuration ? `⚠️ Phải bằng ${currentSumDuration}p` : '✅ Đã khớp thời gian'}
-                  </p>
+                  <p className={`text-[10px] font-black mt-1.5 uppercase ${formData.durationMinutes !== currentSumDuration ? 'text-red-500' : 'text-green-600'}`}>{formData.durationMinutes !== currentSumDuration ? `⚠️ Phải bằng ${currentSumDuration}p` : '✅ Đã khớp'}</p>
                </div>
-
                <div>
                   <label className="block text-[11px] font-black uppercase text-gray-400 mb-2">Điểm tối đa tổng</label>
                   <input type="number" name="maxScore" value={formData.maxScore} onChange={handleInputChange} className={`${inputClass} ${formData.maxScore !== currentSumScore ? 'border-red-400 bg-red-50 text-red-600' : 'border-green-400 bg-green-50 text-green-700'}`} />
-                  <p className={`text-[10px] font-black mt-1.5 uppercase ${formData.maxScore !== currentSumScore ? 'text-red-500' : 'text-green-600'}`}>
-                    {formData.maxScore !== currentSumScore ? `⚠️ Phải bằng ${currentSumScore}đ` : '✅ Đã khớp điểm số'}
-                  </p>
+                  <p className={`text-[10px] font-black mt-1.5 uppercase ${formData.maxScore !== currentSumScore ? 'text-red-500' : 'text-green-600'}`}>{formData.maxScore !== currentSumScore ? `⚠️ Phải bằng ${currentSumScore}đ` : '✅ Đã khớp'}</p>
                </div>
                <div><label className="block text-[11px] font-black uppercase text-gray-400 mb-2">Điểm đỗ tổng (Passing)</label><input type="number" name="passingScore" value={formData.passingScore} onChange={handleInputChange} className={inputClass} /></div>
              </div>
@@ -183,7 +188,6 @@ export const ExamModal = ({ isOpen, onClose, editId, onSuccess, levels }) => {
              <div className="flex items-center justify-between mb-6">
                 <h3 className="font-black text-lg text-gray-900 dark:text-white">2. Các phần thi cấu thành (Sections)</h3>
              </div>
-             
              <div className="space-y-6 mb-6">
                {formData.sections.map((sec, idx) => (
                  <div key={idx} className="bg-gray-50 dark:bg-gray-800/30 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 relative">
@@ -202,7 +206,6 @@ export const ExamModal = ({ isOpen, onClose, editId, onSuccess, levels }) => {
              </div>
              <button type="button" onClick={addSection} className="w-full py-4 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 text-gray-500 font-black hover:bg-primary/5 hover:text-primary transition-all flex items-center justify-center gap-2"><Plus size={20}/> Thêm Phần Thi (Section)</button>
           </div>
-
         </div>
 
         <div className="px-10 py-6 border-t border-gray-200/50 dark:border-gray-800 bg-white dark:bg-gray-900 flex justify-end gap-4 z-20 shadow-lg">

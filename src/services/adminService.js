@@ -388,4 +388,41 @@ getGrammars: async (search = '', levelId = '', lessonId = '', page = 0, size = 1
     const res = await fetch(`${BASE_URL}/questions/${questionId}`, { method: 'DELETE', headers: getHeaders() });
     return handleResponse(res);
   },
+
+  // ================= QUẢN LÝ LỘ TRÌNH GAMIFICATION (STATIONS) =================
+  getStations: async (search = '', levelId = '', itemType = '', page = 0, size = 15) => {
+    const params = new URLSearchParams({ page, size });
+    if (search) params.append('search', search);
+    if (levelId) params.append('levelId', levelId);
+    if (itemType) params.append('itemType', itemType);
+    
+    const res = await fetch(`${BASE_URL}/station?${params.toString()}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  getStationById: async (id) => {
+    const res = await fetch(`${BASE_URL}/station/${id}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  createStation: async (data) => {
+    const res = await fetch(`${BASE_URL}/station`, { method: 'POST', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  updateStation: async (id, data) => {
+    const res = await fetch(`${BASE_URL}/station/${id}`, { method: 'PUT', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  deleteStation: async (id) => {
+    const res = await fetch(`${BASE_URL}/station/${id}`, { method: 'DELETE', headers: getHeaders() });
+    return handleResponse(res);
+  },
+  reorderStations: async (items) => {
+    const res = await fetch(`${BASE_URL}/station/reorder`, { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ items }) });
+    return handleResponse(res);
+  },
+
+  getCompactDictionary: async (levelId, type) => {
+    const endpoint = type === 'KANJI' ? `/kanji/compact?levelId=${levelId}` : `/vocab/compact?levelId=${levelId}`;
+    const res = await fetch(`${BASE_URL}${endpoint}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
 };
