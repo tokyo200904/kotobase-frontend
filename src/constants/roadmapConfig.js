@@ -1,6 +1,5 @@
 export const COLORS = { NEW: '#3b82f6', LEARNING: '#f59e0b', MASTERED: '#10b981' };
 
-// ĐÃ SỬA KEY LẠI THÀNH: 1=N5, 2=N4, 3=N3, 4=N2, 5=N1 
 export const LEVEL_CONFIGS = {
   1: { name: 'Sơ Cấp N5', badge: 'N5', bg: 'bg-emerald-500', from: 'from-emerald-400 to-green-600', text: 'text-emerald-500', border: 'border-emerald-500/20', glow: 'shadow-emerald-500/10', track: 'border-emerald-200 dark:border-emerald-950/40', btnShadow: 'shadow-[0_8px_0_#059669]', activeBtnShadow: 'active:shadow-[0_0px_0_#059669]' },
   2: { name: 'Sơ Trung N4', badge: 'N4', bg: 'bg-blue-500', from: 'from-blue-400 to-blue-600', text: 'text-blue-500', border: 'border-blue-500/20', glow: 'shadow-blue-500/10', track: 'border-blue-200 dark:border-blue-950/40', btnShadow: 'shadow-[0_8px_0_#2563eb]', activeBtnShadow: 'active:shadow-[0_0px_0_#2563eb]' },

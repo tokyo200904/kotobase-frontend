@@ -27,25 +27,7 @@ export const progressService = {
     });
     if (!res.ok) throw new Error('Lỗi tải danh sách đã lưu');
     return await res.json();
-  },
-
-  getReviewItems: async (type) => {
-    const res = await fetch(`${BASE_URL}/review-items?type=${type}`, {
-      method: 'GET',
-      headers: getHeaders()
-    });
-    if (!res.ok) throw new Error('Lỗi tải danh sách bài ôn tập');
-    return await res.json();
-  },
-
-
-  submitReviewResults: async (type, answers) => {
-    const res = await fetch(`${BASE_URL}/submit-review`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({ type, answers })
-    });
-    if (!res.ok) throw new Error('Lỗi khi lưu kết quả ôn tập');
-    return await res.json();
   }
+
+  
 };

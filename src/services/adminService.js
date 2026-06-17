@@ -297,4 +297,95 @@ getGrammars: async (search = '', levelId = '', lessonId = '', page = 0, size = 1
     const res = await fetch(`${BASE_URL}/plans/active-list`, { headers: getHeaders() });
     return handleResponse(res);
   },
+
+  // ================= QUẢN LÝ ĐỀ THI (EXAMS) =================
+  getExams: async (search = '', levelId = '', page = 0, size = 10) => {
+    const params = new URLSearchParams({ page, size });
+    if (search) params.append('search', search);
+    if (levelId) params.append('levelId', levelId);
+    
+    // Ghi chú: Dùng đúng path /exam/attempts theo backend của bạn
+    const res = await fetch(`${BASE_URL}/exam/attempts?${params.toString()}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  getExamById: async (id) => {
+    const res = await fetch(`${BASE_URL}/exam/attempts/${id}`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  createExam: async (data) => {
+    const res = await fetch(`${BASE_URL}/exam/attempts`, { method: 'POST', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  updateExam: async (id, data) => {
+    const res = await fetch(`${BASE_URL}/exam/attempts/${id}`, { method: 'PUT', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  deleteExam: async (id) => {
+    const res = await fetch(`${BASE_URL}/exam/attempts/${id}`, { method: 'DELETE', headers: getHeaders() });
+    return handleResponse(res);
+  },
+
+  // ================= QUẢN LÝ CÂU HỎI (QUESTION GROUPS) =================
+  getQuestionGroupsBySection: async (sectionId) => {
+    const res = await fetch(`${BASE_URL}/exam/group/sections/${sectionId}/question-groups`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  createQuestionGroup: async (sectionId, data) => {
+    const res = await fetch(`${BASE_URL}/exam/group/sections/${sectionId}/question-groups`, { method: 'POST', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  updateQuestionGroup: async (groupId, data) => {
+    const res = await fetch(`${BASE_URL}/exam/group/question-groups/${groupId}`, { method: 'PUT', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  deleteQuestionGroup: async (groupId) => {
+    const res = await fetch(`${BASE_URL}/exam/group/question-groups/${groupId}`, { method: 'DELETE', headers: getHeaders() });
+    return handleResponse(res);
+  },
+
+  // ================= QUẢN LÝ ĐA PHƯƠNG TIỆN (AUDIO & IMAGE UPLOAD) =================
+  uploadAudio: async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const token = localStorage.getItem('token');
+    
+    const res = await fetch(`http://localhost:8080/api/v1/audios/upload`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` }, 
+      body: formData
+    });
+    return handleResponse(res);
+  },
+
+  uploadImage: async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const token = localStorage.getItem('token');
+    
+    const res = await fetch(`http://localhost:8080/api/v1/images/upload`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+      body: formData
+    });
+    return handleResponse(res);
+  },
+
+  // ================= QUẢN LÝ CÂU HỎI CON CHI TIẾT (SUB-QUESTIONS) =================
+  getQuestionsByGroup: async (groupId) => {
+    // Lưu ý: Path bám sát @RequestMapping("/api/v1/admin/") của sếp
+    const res = await fetch(`${BASE_URL}/question-groups/${groupId}/questions`, { headers: getHeaders() });
+    return handleResponse(res);
+  },
+  addQuestionToGroup: async (groupId, data) => {
+    const res = await fetch(`${BASE_URL}/question-groups/${groupId}/questions`, { method: 'POST', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  updateQuestion: async (questionId, data) => {
+    const res = await fetch(`${BASE_URL}/questions/${questionId}`, { method: 'PUT', headers: getHeaders(), body: JSON.stringify(data) });
+    return handleResponse(res);
+  },
+  deleteQuestion: async (questionId) => {
+    const res = await fetch(`${BASE_URL}/questions/${questionId}`, { method: 'DELETE', headers: getHeaders() });
+    return handleResponse(res);
+  },
 };
